@@ -272,7 +272,7 @@
       <!-- ================= [STEP 5] UNLOCKED RESULT ================= -->
       <section id="view-result" class="hidden px-5 pt-6 pb-12 flex flex-col flex-1">
         
-        <!-- 친구 공유 링크로 들어왔을 때만 노출되는 배너 -->
+        <!-- 친구 공유 링크로 들어왔을 때만 노출되는 상단 안내 배너 -->
         <div id="shared-notice-banner" class="hidden mb-4 p-3.5 bg-blue-50 border border-blue-200 rounded-2xl text-center shadow-sm">
           <p class="text-xs font-extrabold text-[#3182F6]">👀 친구가 공유한 솔로 빌리지 부캐 결과입니다!</p>
           <p class="text-[11px] text-gray-600 mt-0.5 font-medium">나는 어떤 캐릭터일까? 지금 바로 내 부캐를 확인해 보세요.</p>
@@ -284,7 +284,7 @@
           </span>
         </div>
 
-        <div class="rounded-3xl bg-gradient-to-b from-white to-gray-50 border border-gray-200 p-6 shadow-xl mb-5 relative overflow-hidden">
+        <div class="rounded-3xl bg-gradient-to-b from-white to-gray-50 border border-gray-200 p-6 shadow-xl mb-4 relative overflow-hidden">
           
           <div class="flex items-start justify-between mb-4">
             <div>
@@ -350,6 +350,20 @@
               <span class="block font-bold text-red-800 mb-0.5">상극 캐릭터 💔</span>
               <span id="res-worst" class="text-gray-800 font-medium text-[11px]"></span>
             </div>
+          </div>
+        </div>
+
+        <!-- [신규] 화면에서 직접 눈으로 확인하는 내 결과 전용 링크 박스 -->
+        <div class="mb-4 p-3.5 bg-gray-50 rounded-2xl border border-gray-200">
+          <div class="flex items-center justify-between mb-1.5">
+            <span class="text-[11px] font-bold text-gray-500">🔗 내 결과 전용 주소</span>
+            <span id="copy-badge-text" class="hidden text-[10px] font-bold text-emerald-600">✓ 복사되었습니다</span>
+          </div>
+          <div class="flex items-center gap-2">
+            <input id="direct-result-url" type="text" readonly class="flex-1 bg-white px-3 py-2 text-xs text-gray-700 font-semibold rounded-xl border border-gray-200 select-all focus:outline-none" value="" />
+            <button onclick="copyToClipboard()" class="px-3.5 py-2 bg-[#3182F6] hover:bg-[#206fe0] active:scale-95 text-white text-xs font-bold rounded-xl transition-all flex-shrink-0">
+              복사
+            </button>
           </div>
         </div>
 
@@ -676,8 +690,8 @@
     };
 
     function startQuiz() {
-      // 주소창에 남아있는 쿼리 파라미터(?r=...&g=...) 깔끔하게 제거
-      window.history.replaceState({}, document.title, window.location.pathname);
+      // 주소창 파라미터 초기화
+      window.history.replaceState(null, '', window.location.pathname);
       document.getElementById('shared-notice-banner').classList.add('hidden');
       document.getElementById('btn-take-quiz-from-shared').classList.add('hidden');
 
@@ -822,15 +836,16 @@
       }, 1000);
     }
 
+    // 결과 해제 시 주소창 및 화면 링크 갱신
     function unlockAndShowResult() {
       incrementCounter();
       document.getElementById('modal-ad').classList.add('hidden');
       document.getElementById('view-locked').classList.add('hidden');
       document.getElementById('view-result').classList.remove('hidden');
       
-      // 내 결과가 확정되었을 때 브라우저 주소창에 파라미터 반영 (?r=A&g=M)
-      const newUrl = getResultUrl();
-      window.history.replaceState({ path: newUrl }, '', newUrl);
+      // 1. 브라우저 주소창에 ?r=...&g=... 즉시 반영
+      const queryStr = `?r=${calculatedDominantType}&g=${currentGender}`;
+      window.history.replaceState(null, '', queryStr);
 
       renderResultCard(calculatedDominantType);
     }
@@ -873,15 +888,19 @@
       document.getElementById('res-stat-votes').innerText = data.votes;
       document.getElementById('res-stat-meme').innerText = `${data.memeRate}%`;
       votesSub.innerText = data.votesText;
+
+      // 2. 화면 내 전용 링크 인풋창에 전체 주소 자동 삽입
+      const fullUrl = `${window.location.origin}${window.location.pathname}?r=${type}&g=${currentGender}`;
+      const directInput = document.getElementById('direct-result-url');
+      if (directInput) {
+        directInput.value = fullUrl;
+      }
     }
 
-    // 결과 고유 주소(URL) 생성 함수
     function getResultUrl() {
-      const baseUrl = window.location.origin + window.location.pathname;
-      return `${baseUrl}?r=${calculatedDominantType}&g=${currentGender}`;
+      return `${window.location.origin}${window.location.pathname}?r=${calculatedDominantType}&g=${currentGender}`;
     }
 
-    // 결과 맞춤형 공유 로직 (내 고유 결과 URL을 복사/전송)
     function shareLink() {
       const data = resultsDb[currentGender][calculatedDominantType] || resultsDb[currentGender]['A'];
       const targetUrl = getResultUrl();
@@ -905,13 +924,17 @@
       const copyContent = `[내가 만약 솔로나라에 나간다면?]\n내 부캐는 [${data.name}]! (첫인상: ${data.votes})\n친구 결과 보기 👉 ${targetUrl}`;
       
       navigator.clipboard.writeText(copyContent).then(() => {
+        const badge = document.getElementById('copy-badge-text');
+        if (badge) {
+          badge.classList.remove('hidden');
+          setTimeout(() => badge.classList.add('hidden'), 2500);
+        }
         alert('내 결과 전용 링크가 복사되었습니다! 카톡이나 DM에 붙여넣어 공유하세요.');
       });
     }
 
     function resetQuiz() {
-      // 주소창 파라미터 초기화
-      window.history.replaceState({}, document.title, window.location.pathname);
+      window.history.replaceState(null, '', window.location.pathname);
 
       document.getElementById('view-result').classList.add('hidden');
       document.getElementById('view-photo-option').classList.add('hidden');
@@ -930,13 +953,12 @@
       document.getElementById('photo-input').value = "";
     }
 
-    // 페이지 접속 시 공유 링크(?r=...&g=...)인지 확인하는 핵심 함수
+    // 접속 시 주소창에 ?r=...&g=... 파라미터가 있는지 체크
     function checkSharedResult() {
       const urlParams = new URLSearchParams(window.location.search);
       const sharedR = urlParams.get('r');
       const sharedG = urlParams.get('g');
 
-      // 유효한 결과 파라미터가 있는 경우 바로 결과 화면을 렌더링
       if (sharedR && sharedG && resultsDb[sharedG] && resultsDb[sharedG][sharedR]) {
         currentGender = sharedG;
         calculatedDominantType = sharedR;
@@ -944,7 +966,6 @@
         document.getElementById('view-landing').classList.add('hidden');
         document.getElementById('view-result').classList.remove('hidden');
 
-        // 친구가 공유한 링크임을 알리는 안내 배너 및 '나도 하러가기' 버튼 노출
         document.getElementById('shared-notice-banner').classList.remove('hidden');
         document.getElementById('btn-take-quiz-from-shared').classList.remove('hidden');
 
@@ -954,7 +975,7 @@
 
     window.addEventListener('DOMContentLoaded', () => {
       updateParticipantCounter();
-      checkSharedResult(); // 공유 링크 체크 실행
+      checkSharedResult();
     });
   </script>
 </body>
