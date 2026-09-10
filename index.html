@@ -1,0 +1,879 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>내가 만약 | 극사실주의 데이팅 빌리지 편</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css" />
+  <style>
+    body {
+      font-family: "Pretendard Variable", Pretendard, -apple-system, BlinkMacSystemFont, system-ui, Roboto, sans-serif;
+      -webkit-tap-highlight-color: transparent;
+    }
+  </style>
+</head>
+<body class="bg-[#F2F4F6] text-[#191F28] antialiased min-h-screen flex justify-center selection:bg-blue-100 selection:text-blue-600">
+
+  <!-- Mobile Frame Container -->
+  <main class="w-full max-w-[480px] bg-white min-h-screen flex flex-col justify-between shadow-2xl relative overflow-x-hidden">
+
+    <!-- Top Navigation Bar -->
+    <header class="sticky top-0 z-40 bg-white/90 backdrop-blur-md px-5 py-3.5 flex items-center justify-between border-b border-gray-100">
+      <div class="flex items-center gap-2 cursor-pointer" onclick="resetQuiz()">
+        <span class="w-2.5 h-2.5 rounded-full bg-[#3182F6] animate-ping"></span>
+        <span class="font-black text-lg tracking-tight text-gray-900">내가 만약<span class="text-[#3182F6]">.</span></span>
+      </div>
+      <span class="text-xs font-bold px-2.5 py-1 bg-gray-100 text-gray-600 rounded-full">EP.01 솔로 빌리지</span>
+    </header>
+
+    <div id="content-area" class="flex-1 flex flex-col">
+
+      <!-- ================= [STEP 1] LANDING ================= -->
+      <section id="view-landing" class="px-5 pt-8 pb-12 flex flex-col flex-1">
+        <div class="inline-flex items-center gap-1.5 px-3 py-1.5 bg-blue-50 border border-blue-100 rounded-full w-fit mb-5">
+          <span class="text-xs">🔥</span>
+          <span id="live-counter-badge" class="text-xs font-bold text-[#3182F6] tracking-tight">실시간 참여 급상승 중</span>
+        </div>
+
+        <div class="space-y-3 mb-7">
+          <h1 class="text-[32px] font-black leading-[1.25] tracking-tight text-gray-950">
+            만약 내가<br/>
+            그 <span class="text-[#3182F6] underline decoration-blue-200 decoration-4 underline-offset-4">연애 예능</span>에<br/>
+            직접 나간다면?
+          </h1>
+          <p class="text-gray-500 text-[15px] font-medium leading-relaxed">
+            매주 남 얘기 같던 솔로나라, 내 현실 부캐는 누구일까?<br/>
+            3박 4일 시뮬레이션으로 확인하는 첫인상 득표와 생존 리포트.
+          </p>
+        </div>
+
+        <!-- 2x2 Grid Preview -->
+        <div class="mb-7">
+          <div class="flex items-center justify-between mb-3">
+            <span class="text-xs font-bold text-gray-400 uppercase tracking-wider">주요 캐릭터 프리뷰</span>
+            <span class="text-[11px] font-semibold text-[#3182F6]">남녀 12가지 유형</span>
+          </div>
+          <div class="grid grid-cols-2 gap-2.5">
+            <div class="p-3.5 rounded-2xl bg-gray-50 border border-gray-100">
+              <span class="text-2xl mb-1 block">🥊</span>
+              <p class="text-[10px] font-extrabold text-[#3182F6]">직진 마초</p>
+              <h4 class="font-bold text-xs text-gray-900 mb-0.5">영철 (행동대장)</h4>
+              <p class="text-[11px] text-gray-500 leading-snug">첫날부터 풀악셀 밟다 급발진 탈락 위기</p>
+            </div>
+            <div class="p-3.5 rounded-2xl bg-gray-50 border border-gray-100">
+              <span class="text-2xl mb-1 block">👑</span>
+              <p class="text-[10px] font-extrabold text-rose-500">비주얼 센터</p>
+              <h4 class="font-bold text-xs text-gray-900 mb-0.5">옥순 (올킬형)</h4>
+              <p class="text-[11px] text-gray-500 leading-snug">첫인상 몰표 받지만 여자방 견제 1순위</p>
+            </div>
+            <div class="p-3.5 rounded-2xl bg-gray-50 border border-gray-100">
+              <span class="text-2xl mb-1 block">♟️</span>
+              <p class="text-[10px] font-extrabold text-indigo-500">독자 세계관</p>
+              <h4 class="font-bold text-xs text-gray-900 mb-0.5">광수 (지략가)</h4>
+              <p class="text-[11px] text-gray-500 leading-snug">혼자 심리전 짜다 첫날부터 0표 위기</p>
+            </div>
+            <div class="p-3.5 rounded-2xl bg-gray-50 border border-gray-100">
+              <span class="text-2xl mb-1 block">🔮</span>
+              <p class="text-[10px] font-extrabold text-amber-600">도파민 폭풍</p>
+              <h4 class="font-bold text-xs text-gray-900 mb-0.5">영숙 (감정서사)</h4>
+              <p class="text-[11px] text-gray-500 leading-snug">화제성 원탑, 사소한 말에 거실 뒤흔듦</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="p-4 rounded-2xl bg-gray-50 border border-gray-100 space-y-2 mb-8 text-xs text-gray-700 font-medium">
+          <div class="flex items-center gap-2"><span class="text-emerald-500 font-bold">✓</span> 3박 4일 현실 고증 정밀 설문 (6문항)</div>
+          <div class="flex items-center gap-2"><span class="text-emerald-500 font-bold">✓</span> 첫인상 0표부터 3표까지 현실적인 득표 예측</div>
+          <div class="flex items-center gap-2"><span class="text-emerald-500 font-bold">✓</span> [선택] 사진 업로드 시 첫인상 관상 정밀 분석</div>
+        </div>
+
+        <div class="mt-auto space-y-3">
+          <button onclick="startQuiz()" class="w-full py-4 px-6 bg-[#3182F6] hover:bg-[#206fe0] active:scale-[0.98] transition-all text-white font-bold text-base rounded-2xl shadow-lg shadow-blue-500/20 flex items-center justify-center gap-2">
+            <span>60초 만에 내 부캐 확인하기</span>
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"></path></svg>
+          </button>
+        </div>
+      </section>
+
+      <!-- ================= [STEP 2] 6-QUESTION QUIZ (가독성 개편) ================= -->
+      <section id="view-quiz" class="hidden px-5 pt-6 pb-8 flex flex-col flex-1">
+        
+        <!-- Progress Bar -->
+        <div class="mb-5">
+          <div class="flex justify-between items-center mb-1.5">
+            <span id="quiz-step-text" class="text-xs font-extrabold text-[#3182F6] tracking-wider uppercase">Q1 / 6</span>
+            <span id="quiz-percent-text" class="text-xs font-bold text-gray-400">16%</span>
+          </div>
+          <div class="w-full h-1.5 bg-gray-100 rounded-full overflow-hidden">
+            <div id="quiz-progress-bar" class="h-full bg-[#3182F6] rounded-full transition-all duration-300 ease-out" style="width: 16%"></div>
+          </div>
+        </div>
+
+        <!-- Gender Selector (Q1 only) -->
+        <div id="gender-selector-container" class="mb-5 p-3.5 bg-gray-50 rounded-2xl border border-gray-100">
+          <label class="block text-xs font-bold text-gray-600 mb-2">출연할 내 캐릭터 성별을 선택해 주세요</label>
+          <div class="grid grid-cols-2 gap-2">
+            <button type="button" onclick="selectGender('M')" id="gender-m" class="py-2.5 text-xs font-black rounded-xl border border-[#3182F6] bg-blue-50 text-[#3182F6] transition-all">남성 출연자</button>
+            <button type="button" onclick="selectGender('F')" id="gender-f" class="py-2.5 text-xs font-black rounded-xl border border-gray-200 bg-white text-gray-600 transition-all">여성 출연자</button>
+          </div>
+        </div>
+
+        <!-- Question Header (High Contrast & Clear Visual Anchor) -->
+        <div class="mb-5">
+          <span class="inline-block text-[11px] font-extrabold px-2.5 py-1 bg-blue-50 text-[#3182F6] rounded-lg mb-2 tracking-tight" id="question-category">
+            Day 1. 입소 첫날
+          </span>
+          <h2 id="question-title" class="text-[21px] font-black text-gray-950 leading-[1.35] tracking-tight">
+            질문 내용이 표시됩니다
+          </h2>
+        </div>
+
+        <!-- Options Container (Readable Cards with Index Badges) -->
+        <div id="options-container" class="space-y-2.5 flex-1"></div>
+      </section>
+
+      <!-- ================= [STEP 2.5] OPTIONAL PHOTO UPLOAD ================= -->
+      <section id="view-photo-option" class="hidden px-5 pt-8 pb-10 flex flex-col flex-1 text-center">
+        <div class="inline-flex items-center gap-1 px-3 py-1 bg-gray-100 rounded-full w-fit mx-auto mb-3">
+          <span class="text-xs">📸</span>
+          <span class="text-xs font-bold text-gray-600">선택 사항</span>
+        </div>
+        
+        <h2 class="text-2xl font-black text-gray-900 mb-2 leading-tight">
+          내 사진 넣고<br/>
+          첫인상 득표수 확인하기
+        </h2>
+        <p class="text-xs text-gray-500 mb-6 leading-relaxed">
+          사진을 등록하면 첫인상 분위기를 반영해<br/>
+          <strong>예상 득표수(0~3표)</strong>와 <strong>방송 자막 명패 카드</strong>가 생성됩니다.
+        </p>
+
+        <div class="mb-6">
+          <input type="file" id="photo-input" accept="image/*" class="hidden" onchange="handlePhotoUpload(event)">
+          
+          <div onclick="document.getElementById('photo-input').click()" class="w-48 h-56 mx-auto rounded-3xl border-2 border-dashed border-gray-300 hover:border-[#3182F6] bg-gray-50 transition-all cursor-pointer flex flex-col items-center justify-center p-4 relative overflow-hidden group shadow-sm">
+            <div id="photo-placeholder" class="flex flex-col items-center">
+              <div class="w-14 h-14 bg-white rounded-2xl shadow-sm flex items-center justify-center text-2xl mb-3 text-gray-400 group-hover:scale-110 transition-transform">
+                📷
+              </div>
+              <span class="text-xs font-bold text-gray-700 mb-1">내 사진 올리기 (선택)</span>
+              <span class="text-[10px] text-gray-400">터치하여 앨범에서 선택</span>
+            </div>
+
+            <img id="photo-preview-img" src="" alt="내 사진 미리보기" class="hidden absolute inset-0 w-full h-full object-cover">
+            
+            <div id="photo-change-badge" class="hidden absolute bottom-2 left-2 right-2 bg-black/70 backdrop-blur-sm text-white text-[10px] font-bold py-1.5 rounded-xl">
+              사진 변경하기
+            </div>
+          </div>
+        </div>
+
+        <div class="p-3 bg-gray-50 border border-gray-100 rounded-2xl mb-8 flex items-start gap-2 text-left">
+          <span class="text-sm">🔒</span>
+          <p class="text-[11px] text-gray-500 leading-snug">
+            <strong>개인정보 안심 안내:</strong> 업로드한 사진은 서버에 저장되지 않으며, 기기 내 브라우저에서만 일회성으로 합성된 후 즉시 소멸됩니다.
+          </p>
+        </div>
+
+        <div class="mt-auto space-y-3">
+          <button id="btn-submit-photo" onclick="proceedToLockedTeaser(true)" class="hidden w-full py-4 px-6 bg-[#3182F6] hover:bg-[#206fe0] active:scale-[0.98] transition-all text-white font-bold text-sm rounded-2xl shadow-lg shadow-blue-500/20 flex items-center justify-center gap-2">
+            <span>✨ 사진 반영하고 결과 확인하기</span>
+          </button>
+
+          <button onclick="proceedToLockedTeaser(false)" class="w-full py-3.5 px-6 bg-gray-100 hover:bg-gray-200 active:scale-[0.98] text-gray-600 font-bold text-xs rounded-2xl transition-all">
+            사진 없이 기본 결과 보기 ➔
+          </button>
+        </div>
+      </section>
+
+      <!-- ================= [STEP 3] RESULT LOCKED TEASER ================= -->
+      <section id="view-locked" class="hidden px-5 pt-8 pb-10 flex flex-col flex-1 text-center">
+        <div class="w-12 h-12 bg-blue-50 text-[#3182F6] rounded-2xl flex items-center justify-center text-2xl mx-auto mb-3 shadow-inner">
+          ✨
+        </div>
+        <h2 class="text-xl font-black text-gray-900 mb-1">분석이 완료되었습니다</h2>
+        <p class="text-xs text-gray-500 mb-6">당신의 솔로 빌리지 생존 리포트가 발급되었습니다.</p>
+
+        <div class="relative rounded-3xl border border-gray-200 p-6 bg-gradient-to-b from-gray-50 to-white shadow-lg overflow-hidden mb-6">
+          <div class="filter blur-md select-none opacity-40">
+            <div class="flex justify-between items-center mb-4">
+              <span class="text-xs font-bold text-gray-400">#부캐_캐릭터</span>
+              <div class="w-10 h-10 bg-gray-300 rounded-xl"></div>
+            </div>
+            <h3 class="text-2xl font-black text-gray-900 mb-2">??? (분석 완료)</h3>
+            <p class="text-xs text-gray-600 mb-4">상세 생존 전략과 첫인상 데이터 마스킹</p>
+            <div class="grid grid-cols-2 gap-2">
+              <div class="p-2 bg-gray-200 rounded-lg h-10"></div>
+              <div class="p-2 bg-gray-200 rounded-lg h-10"></div>
+            </div>
+          </div>
+
+          <div class="absolute inset-0 flex flex-col items-center justify-center bg-white/70 backdrop-blur-[2px] p-5">
+            <div class="w-11 h-11 bg-[#3182F6] text-white rounded-full flex items-center justify-center text-xl shadow-lg shadow-blue-500/30 mb-2.5">
+              🔒
+            </div>
+            <h4 class="font-extrabold text-sm text-gray-900 mb-1">결과 카드가 잠겨있습니다</h4>
+            <p class="text-[11px] text-gray-500 font-medium">5초 광고 시청 후 즉시 잠금이 해제됩니다</p>
+          </div>
+        </div>
+
+        <div class="mt-auto space-y-2">
+          <button onclick="openAdModal()" class="w-full py-4 px-6 bg-[#3182F6] hover:bg-[#206fe0] active:scale-[0.98] transition-all text-white font-bold text-base rounded-2xl shadow-lg shadow-blue-500/20 flex items-center justify-center gap-2">
+            <span>5초 광고 보고 결과 확인하기 ➔</span>
+          </button>
+          <p class="text-[11px] text-gray-400">광고 시청 후 무료로 열람됩니다</p>
+        </div>
+      </section>
+
+      <!-- ================= [STEP 4] REWARDED AD MODAL ================= -->
+      <div id="modal-ad" class="hidden fixed inset-0 z-50 bg-black/75 backdrop-blur-sm flex items-center justify-center p-4">
+        <div class="w-full max-w-[380px] bg-white rounded-3xl overflow-hidden shadow-2xl flex flex-col">
+          <div class="bg-gray-900 px-4 py-3 flex items-center justify-between text-white">
+            <span class="text-xs font-semibold flex items-center gap-1.5">
+              <span class="w-2 h-2 rounded-full bg-yellow-400"></span> 스폰서 광고
+            </span>
+            <span id="ad-timer-badge" class="text-xs font-bold px-2 py-0.5 bg-white/20 rounded-md">5초 후 해제</span>
+          </div>
+
+          <div class="p-6 flex flex-col items-center text-center bg-gradient-to-b from-blue-50/40 to-white">
+            <div class="w-full h-44 bg-gray-100 border-2 border-dashed border-gray-300 rounded-2xl flex flex-col items-center justify-center p-4 mb-4">
+              <span class="text-3xl mb-2">🎁</span>
+              <p class="text-xs font-bold text-gray-700 mb-1">스폰서 광고 노출 영역</p>
+              <p class="text-[11px] text-gray-400">배포 시 애드센스/애드핏 배너 연동</p>
+            </div>
+            <p class="text-xs font-semibold text-gray-600 mb-1">잠시만 기다려주세요</p>
+            <p class="text-[11px] text-gray-400">카운트다운이 끝나면 결과가 자동으로 열립니다.</p>
+          </div>
+
+          <div class="p-4 bg-gray-50 border-t border-gray-100">
+            <button id="btn-ad-unlock" disabled class="w-full py-3.5 px-4 bg-gray-200 text-gray-400 font-bold text-sm rounded-xl transition-all flex items-center justify-center gap-2 cursor-not-allowed">
+              <span id="btn-ad-text">5초 후 잠금 해제</span>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- ================= [STEP 5] UNLOCKED RESULT ================= -->
+      <section id="view-result" class="hidden px-5 pt-6 pb-12 flex flex-col flex-1">
+        <div class="text-center mb-3">
+          <span class="text-[11px] font-bold px-3 py-1 bg-blue-50 text-[#3182F6] rounded-full border border-blue-100">
+            생존 분석 리포트 발급 완료
+          </span>
+        </div>
+
+        <div class="rounded-3xl bg-gradient-to-b from-white to-gray-50 border border-gray-200 p-6 shadow-xl mb-5 relative overflow-hidden">
+          
+          <div class="flex items-start justify-between mb-4">
+            <div>
+              <p id="res-badge" class="text-xs font-bold text-[#3182F6] mb-1">#캐릭터_유형</p>
+              <h2 id="res-name" class="text-2xl font-black text-gray-900">캐릭터명</h2>
+              <p id="res-votes-sub" class="text-xs font-bold text-gray-500 mt-1">첫인상 예상: 0표</p>
+            </div>
+
+            <!-- Avatar -->
+            <div id="res-avatar-wrapper" class="relative">
+              <div id="res-avatar-emoji" class="w-16 h-16 bg-gray-100 rounded-2xl flex items-center justify-center text-3xl shadow-inner">
+                🥊
+              </div>
+              <div id="res-avatar-photo-frame" class="hidden w-16 h-16 rounded-2xl overflow-hidden border-2 border-gray-800 shadow-md relative">
+                <img id="res-avatar-img" src="" alt="유저 프로필" class="w-full h-full object-cover">
+                <span class="absolute bottom-0 inset-x-0 bg-black/70 backdrop-blur-sm text-white text-[8px] font-bold text-center py-0.5">
+                  LIVE
+                </span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Quote -->
+          <div class="p-3 bg-gray-100 rounded-xl mb-5">
+            <p id="res-quote" class="text-xs font-bold text-gray-800 italic text-center leading-relaxed">
+              "명대사"
+            </p>
+          </div>
+
+          <!-- 4 Metrics -->
+          <div class="grid grid-cols-2 gap-2 text-center mb-5">
+            <div class="p-3 bg-white rounded-2xl border border-gray-200 shadow-sm">
+              <span class="block text-[10px] text-gray-400 font-bold uppercase">고독정식(0표) 위험도</span>
+              <span id="res-stat-risk" class="text-xl font-black text-rose-500">88%</span>
+            </div>
+            <div class="p-3 bg-white rounded-2xl border border-gray-200 shadow-sm">
+              <span class="block text-[10px] text-gray-400 font-bold uppercase">최종 커플 성사율</span>
+              <span id="res-stat-survive" class="text-xl font-black text-[#3182F6]">19%</span>
+            </div>
+            <div class="p-3 bg-white rounded-2xl border border-gray-200 shadow-sm">
+              <span class="block text-[10px] text-gray-400 font-bold uppercase">첫인상 예상 득표</span>
+              <span id="res-stat-votes" class="text-base font-black text-gray-800">0표</span>
+            </div>
+            <div class="p-3 bg-white rounded-2xl border border-gray-200 shadow-sm">
+              <span class="block text-[10px] text-gray-400 font-bold uppercase">커뮤니티 화제성</span>
+              <span id="res-stat-meme" class="text-base font-black text-gray-800">95%</span>
+            </div>
+          </div>
+
+          <!-- Analysis -->
+          <div class="space-y-2 mb-5">
+            <h4 class="text-xs font-bold text-gray-900">🔍 솔로 빌리지 행동 분석</h4>
+            <p id="res-description" class="text-xs text-gray-600 leading-relaxed font-medium bg-gray-50 p-3.5 rounded-xl border border-gray-100"></p>
+          </div>
+
+          <!-- Chemistry -->
+          <div class="pt-4 border-t border-gray-100 grid grid-cols-2 gap-3 text-xs">
+            <div class="p-2.5 bg-emerald-50 rounded-xl border border-emerald-100">
+              <span class="block font-bold text-emerald-800 mb-0.5">잘 맞는 짝 💚</span>
+              <span id="res-best" class="text-gray-800 font-medium text-[11px]"></span>
+            </div>
+            <div class="p-2.5 bg-red-50 rounded-xl border border-red-100">
+              <span class="block font-bold text-red-800 mb-0.5">상극 캐릭터 💔</span>
+              <span id="res-worst" class="text-gray-800 font-medium text-[11px]"></span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Social Action Buttons -->
+        <div class="space-y-2.5">
+          <button onclick="shareLink()" class="w-full py-4 px-5 bg-[#FEE500] hover:bg-[#FADA0A] active:scale-[0.98] text-[#191919] font-bold text-sm rounded-2xl flex items-center justify-center gap-2 shadow-sm transition-all">
+            <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24"><path d="M12 3c-4.97 0-9 3.185-9 7.115 0 2.557 1.708 4.8 4.27 6.054-.188.702-.682 2.545-.78 2.94-.122.493.18.486.378.354.156-.104 2.483-1.688 3.49-2.373.53.078 1.077.119 1.642.119 4.97 0 9-3.185 9-7.115S16.97 3 12 3z"/></svg>
+            <span>친구에게 링크 보내고 결과 비교하기</span>
+          </button>
+          
+          <button onclick="copyToClipboard()" class="w-full py-3 px-5 bg-gray-100 hover:bg-gray-200 active:scale-[0.98] text-gray-800 font-bold text-xs rounded-xl flex items-center justify-center gap-1.5 transition-all">
+            <span>📋 내 결과 링크 복사하기</span>
+          </button>
+
+          <button onclick="resetQuiz()" class="w-full py-2.5 text-center text-xs font-semibold text-gray-400 hover:text-gray-600">
+            다시 테스트하기
+          </button>
+        </div>
+      </section>
+
+    </div>
+
+    <!-- Footer -->
+    <footer class="px-5 py-4 bg-gray-50 border-t border-gray-100 text-center">
+      <p class="text-[10px] text-gray-400 leading-tight">
+        본 테스트는 대중문화 속 리얼리티 데이팅 장르의 클리셰를 차용한 시뮬레이션 콘텐츠이며 특정 방송 프로그램 및 실존 인물과 무관합니다.
+      </p>
+    </footer>
+
+  </main>
+
+  <script>
+    let currentGender = 'M';
+    let currentStep = 0;
+    const userAnswers = [];
+    let calculatedDominantType = 'A';
+    let userUploadedPhoto = null;
+    let adInterval = null;
+
+    // 카운터 API 설정 (3,000명 분기 처리)
+    const COUNTER_NAMESPACE = 'what-if-solo-village-2026';
+    const COUNTER_KEY = 'participant_count';
+
+    async function updateParticipantCounter() {
+      const badge = document.getElementById('live-counter-badge');
+      try {
+        const res = await fetch(`https://api.counterapi.dev/v1/${COUNTER_NAMESPACE}/${COUNTER_KEY}/`);
+        const data = await res.json();
+        const count = data.count || 0;
+        if (count >= 3000) {
+          badge.innerText = `누적 ${count.toLocaleString()}명 참여 완료`;
+        } else {
+          badge.innerText = '실시간 참여 급상승 중';
+        }
+      } catch (e) {
+        badge.innerText = '실시간 참여 진행 중';
+      }
+    }
+
+    async function incrementCounter() {
+      try {
+        await fetch(`https://api.counterapi.dev/v1/${COUNTER_NAMESPACE}/${COUNTER_KEY}/up`);
+      } catch (e) {}
+    }
+
+    // 3박 4일 타임라인 기반 남/녀 6문항 정밀 데이터베이스
+    const questionsDb = {
+      M: [
+        {
+          category: "Day 1. 입소 첫인상 전략",
+          title: "솔로 빌리지 첫날, 이성의 시선을 낚아챌 내 무기는?",
+          options: [
+            { text: "한눈에 들어오는 압도적인 피지컬과 다부진 체격", type: "A" },
+            { text: "전문직 스펙, 차 키, 여유로운 어른의 품격", type: "B" },
+            { text: "깔끔한 셔츠핏, 차 문 열어주는 젠틀한 매너", type: "C" },
+            { text: "살가운 붙임성과 모성애를 자극하는 연하남 미소", type: "D" },
+            { text: "범상치 않은 아우라와 지적 호기심을 끄는 괴짜미", type: "E" },
+            { text: "말수는 적어도 풍겨 나오는 듬직함과 우직함", type: "F" }
+          ]
+        },
+        {
+          category: "Day 2. 첫 1:1 심야 데이트",
+          title: "호감 상대와 단둘이 떠난 밤 데이트, 나의 대화 스타일은?",
+          options: [
+            { text: "\"오늘 진짜 예쁘시네요.\" 쉴 새 없이 눈 마주치며 저돌적 플러팅", type: "A" },
+            { text: "상대방의 가치관과 인생 계획을 물으며 자연스러운 면접 분위기 조성", type: "B" },
+            { text: "고기 다 잘라주고, 겉옷 챙겨주며 세심하게 에스코트하는 데 집중", type: "C" },
+            { text: "\"누나 귀여워요.\" 애교 부리며 상대방의 지난 연애사 캐묻기", type: "D" },
+            { text: "상대방의 심리와 성향을 분석하듯 심도 있는 대화를 유도", type: "E" },
+            { text: "말수는 적지만 상대 접시에 맛있는 부위를 조용히 얹어주기", type: "F" }
+          ]
+        },
+        {
+          category: "Day 2. 경쟁 구도 직면",
+          title: "마음에 둔 이성이 다른 남자와 묘한 분위기를 풍긴다면?",
+          options: [
+            { text: "\"뺏어오면 되지.\" 당장 1:1 대화를 요청해 돌격한다", type: "A" },
+            { text: "\"갈 사람은 가라.\" 굳이 안 끼고 내 가치를 알아볼 때까지 대기", type: "B" },
+            { text: "상대가 부담 안 느끼게 세심하게 챙기며 서서히 스며든다", type: "C" },
+            { text: "서운한 티를 내며 \"저한테는 마음 없어요?\" 직구를 던진다", type: "D" },
+            { text: "둘 사이의 대화 심리와 역학 관계를 머릿속으로 계산한다", type: "E" },
+            { text: "표정 변화 없이 묵묵히 캔맥주만 마시며 상황을 관망한다", type: "F" }
+          ]
+        },
+        {
+          category: "Day 3. 심야 공용 거실 술자리",
+          title: "모두가 모인 거실 술자리, 내가 무의식적으로 맡는 역할은?",
+          options: [
+            { text: "숯불 피우고, 무거운 테이블 나르고, 고기 굽는 행동대장", type: "A" },
+            { text: "상석에 앉아 건배사를 띄우고 인생 조언을 건네는 맏형", type: "B" },
+            { text: "비어가는 술잔 채워주고 묵묵히 싱크대에서 설거지하는 살림꾼", type: "C" },
+            { text: "노래 부르고 개인기 뽐내며 파티 텐션을 끌어올리는 막내", type: "D" },
+            { text: "구석에서 소수 인원과 3시간째 난해한 철학 토론을 벌이는 괴짜", type: "E" },
+            { text: "구석에 앉아 말없이 묵묵하게 사람들 말을 경청하는 곰", type: "F" }
+          ]
+        },
+        {
+          category: "Day 3. 오해와 갈등 대처",
+          title: "빌리지 내에서 나에 대한 이상한 소문이나 오해가 돌기 시작한다면?",
+          options: [
+            { text: "\"누가 그딴 소릴 해?\" 당장 거실로 나가 범인을 색출하고 담판을 짓는다", type: "A" },
+            { text: "\"어차피 진실은 밝혀집니다.\" 가소롭다는 듯 헛웃음 치고 품위를 지킨다", type: "B" },
+            { text: "오해를 만든 당사자를 찾아가 정중하게 대화로 풀며 상황을 중재한다", type: "C" },
+            { text: "억울해서 친한 형들을 붙잡고 하소연하며 속상한 마음을 토로한다", type: "D" },
+            { text: "누가 왜 그런 말을 퍼뜨렸는지 정보의 출처와 역학 관계를 추적한다", type: "E" },
+            { text: "신경 끄고 \"그러거나 말거나\" 내 할 일만 묵묵히 계속한다", type: "F" }
+          ]
+        },
+        {
+          category: "Day 4. 최종 선택의 기준",
+          title: "연애와 결혼에서 내가 절대 양보할 수 없는 1순위는?",
+          options: [
+            { text: "서로를 향한 본능적인 설렘과 뜨거운 스파크", type: "A" },
+            { text: "경제적 안정감과 양가의 균형, 사회적 인정", type: "B" },
+            { text: "생활 습관의 일치와 소소하고 편안한 티키타카", type: "C" },
+            { text: "내 모든 감정과 약점까지 솔직하게 털어놓을 수 있는 신뢰", type: "D" },
+            { text: "지적 대화의 깊이와 서로의 독립된 세계 존중", type: "E" },
+            { text: "인성, 도덕성, 그리고 시간이 지나도 변치 않을 듬직함", type: "F" }
+          ]
+        }
+      ],
+      F: [
+        {
+          category: "Day 1. 입소 첫인상 전략",
+          title: "솔로 빌리지 첫날, 등장하자마자 각인시킬 내 무기는?",
+          options: [
+            { text: "올킬을 부르는 화려한 스타일링과 세련된 비주얼", type: "A" },
+            { text: "분위기를 압도하는 당당한 커리어와 털털한 입담", type: "B" },
+            { text: "단아하고 여성스러운 원피스핏과 참한 눈웃음", type: "C" },
+            { text: "낯가림 없는 하이텐션과 주변을 밝히는 비타민 에너지", type: "D" },
+            { text: "사연 있어 보이는 깊은 눈빛과 독보적인 감수성", type: "E" },
+            { text: "싹싹한 친화력과 흠잡을 데 없는 야무진 생활력", type: "F" }
+          ]
+        },
+        {
+          category: "Day 2. 첫 1:1 심야 데이트",
+          title: "호감 상대와 단둘이 떠난 밤 데이트, 나의 행동 스타일은?",
+          options: [
+            { text: "도도하게 분위기를 리드하며 남자가 안달 나게 만든다", type: "A" },
+            { text: "\"운전하느라 고생했어! 한잔하자!\" 털털하게 분위기를 풀고 호탕하게 웃는다", type: "B" },
+            { text: "조용히 웃으며 상대방의 말에 리액션을 맞춰주고 편안하게 경청한다", type: "C" },
+            { text: "텐션 높여 장난치고 폭풍 리액션하며 남자를 무장해제시킨다", type: "D" },
+            { text: "눈을 깊게 마주치며 상대방의 내면 깊은 감정선이나 상처를 묻는다", type: "E" },
+            { text: "남자의 현실적인 직장 생활, 통근 거리, 생활 패턴을 조용히 체크한다", type: "F" }
+          ]
+        },
+        {
+          category: "Day 2. 경쟁 구도 직면",
+          title: "마음에 둔 남자가 다른 여자에게 기웃거린다면?",
+          options: [
+            { text: "\"내 건 내가 챙겨.\" 방으로 직접 찾아가 1:1 면담을 신청한다", type: "A" },
+            { text: "\"어이없네.\" 쿨하게 털어버리고 다른 남자를 물색한다", type: "B" },
+            { text: "감정을 밖으로 드러내지 않고 차분히 상대 본심을 지켜본다", type: "C" },
+            { text: "서운해서 여자방에서 언니들에게 털어놓다 울컥 눈물을 쏟는다", type: "D" },
+            { text: "그 남자가 했던 사소한 말 한마디의 숨은 의도를 밤새 곱씹는다", type: "E" },
+            { text: "겉으로는 쿨한 척 웃으며 뼈 있는 농담으로 남자의 속을 떠본다", type: "F" }
+          ]
+        },
+        {
+          category: "Day 3. 심야 공용 거실 술자리",
+          title: "모두가 모인 거실 술자리, 내가 무의식적으로 맡는 역할은?",
+          options: [
+            { text: "가만히 앉아 있어도 모든 남성들의 시선이 쏠리는 센터", type: "A" },
+            { text: "\"오늘 밤 다 마셔!\" 건배 외치며 판을 주도하는 큰언니", type: "B" },
+            { text: "조용히 주방에서 과일 깎아 내오고 뒷정리 돕는 단아한 살림꾼", type: "C" },
+            { text: "노래 틀고 춤추며 지치지 않는 텐션으로 웃기는 비타민", type: "D" },
+            { text: "조용히 있다가 툭 던진 한마디로 거실 공기를 서늘하게 만드는 눈", type: "E" },
+            { text: "술자리 안주 배분부터 내일 아침 라면 끓일 멤버까지 계산하는 총무", type: "F" }
+          ]
+        },
+        {
+          category: "Day 3. 오해와 갈등 대처",
+          title: "빌리지 내에서 나에 대한 묘한 소문이나 오해가 생겼을 때 나의 대처는?",
+          options: [
+            { text: "\"질투하나 보네.\" 콧방귀 뀌고 내 페이스대로 당당하게 직진한다", type: "A" },
+            { text: "\"다 모여봐.\" 여자방에서 대놓고 까놓고 이야기하자며 판을 깐다", type: "B" },
+            { text: "당황하지 않고 묵묵히 평소처럼 행동하며 행동으로 진심을 증명한다", type: "C" },
+            { text: "너무 속상해서 여자방 구석에서 엉엉 울며 언니들에게 안긴다", type: "D" },
+            { text: "\"내가 왜 이런 대접을 받아야 하죠?\" 분노하며 상황을 단번에 뒤엎는다", type: "E" },
+            { text: "내 평판에 금이 가지 않도록 사람들에게 조용히 팩트만 전달하며 정리한다", type: "F" }
+          ]
+        },
+        {
+          category: "Day 4. 최종 선택의 기준",
+          title: "연애와 결혼에서 내가 절대 양보할 수 없는 1순위는?",
+          options: [
+            { text: "서로를 향한 본능적인 설렘과 뜨거운 스파크", type: "A" },
+            { text: "경제적 안정감과 양가의 균형, 사회적 인정", type: "B" },
+            { text: "생활 습관의 일치와 소소하고 편안한 티키타카", type: "C" },
+            { text: "내 모든 감정과 약점까지 솔직하게 털어놓을 수 있는 신뢰", type: "D" },
+            { text: "지적 대화의 깊이와 서로의 독립된 세계 존중", type: "E" },
+            { text: "인성, 도덕성, 그리고 시간이 지나도 변치 않을 듬직함", type: "F" }
+          ]
+        }
+      ]
+    };
+
+    const resultsDb = {
+      M: {
+        A: {
+          name: "영철", badge: "#불도저_직진형", avatar: "🥊",
+          quote: '"뺏기면 잠 못 잡니다. 오늘 밤 당장 결판냅시다."',
+          godokRisk: 72, surviveRate: 26, votes: "1표", memeRate: 91,
+          votesText: "첫인상 1표 (초반 호감)",
+          desc: "첫인상에선 든든함으로 1표를 건지지만, 둘째 날부터 시작되는 불도저식 급발진과 훈계 화법에 상대방이 부담을 느낍니다. 분량과 화제성은 독점하나 최종 성사율은 극과 극입니다.",
+          best: "옥순 (비주얼 센터)", worst: "광수 (방구석 지략가)"
+        },
+        B: {
+          name: "영수", badge: "#품격_전문직맏형", avatar: "🍷",
+          quote: '"서두를 것 없죠. 제 가치를 아는 현명한 분이 남을 테니."',
+          godokRisk: 58, surviveRate: 34, votes: "1표", memeRate: 65,
+          votesText: "첫인상 1표 (스펙 호감)",
+          desc: "직업과 차분한 태도로 자기소개 때 주목을 받지만, 1:1 대화에서 '가르치려는 어른 화법'이 발동하며 분위기가 무거워집니다. 안정감은 원탑이나 연애적 설렘 유발이 숙제입니다.",
+          best: "정숙 (화끈한 리더)", worst: "순자 (감정 솔직파)"
+        },
+        C: {
+          name: "영식", badge: "#단정_모범생매너", avatar: "👞",
+          quote: '"불편하신 건 없으세요? 제가 고기 다 굽겠습니다."',
+          godokRisk: 28, surviveRate: 64, votes: "2표", memeRate: 25,
+          votesText: "첫인상 2표 (실속형 호감)",
+          desc: "남들 눈치 싸움할 때 조용히 고기 굽고 설거지하는 실속파. 도파민은 덜할 수 있어도 '현실 결혼 상대 1순위'라는 신뢰를 얻으며 최종 선택 타율이 가장 높습니다.",
+          best: "현숙 (단아한 실속파)", worst: "영숙 (도파민 폭풍)"
+        },
+        D: {
+          name: "영호", badge: "#낭만_애교연하남", avatar: "🎸",
+          quote: '"제 감정 숨기는 거 못해요. 오늘부터 1일 하고 싶어요."',
+          godokRisk: 78, surviveRate: 22, votes: "1표", memeRate: 88,
+          votesText: "첫인상 1표 (애교형)",
+          desc: "좋고 싫음이 얼굴에 다 드러나는 낭만파. 솔직한 표현으로 경계심을 허물지만, 일이 꼬이면 인터뷰룸에서 눈물을 쏟아내는 등 감정 기복 관리가 필수입니다.",
+          best: "영자 (생활력 똑순이)", worst: "영수 (품격 맏형)"
+        },
+        E: {
+          name: "광수", badge: "#뇌섹_독자세계관", avatar: "♟️",
+          quote: '"이 빌리지의 역학 구조는 심리학적으로 게임이론입니다."',
+          godokRisk: 91, surviveRate: 14, votes: "0표", memeRate: 95,
+          votesText: "첫인상 0표 (독자 노선)",
+          desc: "남들은 연애하는데 혼자 3박 4일 판을 분석하는 전략가. 심야에 이성을 불러내 난해한 철학 토론을 벌이다가 첫날 고독정식(0표 짜장면)을 비빌 확률 91%.",
+          best: "영철 (본능 직진형)", worst: "영식 (단정 모범형)"
+        },
+        F: {
+          name: "상철", badge: "#뚝심_순정마이웨이", avatar: "🐻",
+          quote: '"말재주는 없지만, 한 번 정하면 끝까지 갑니다."',
+          godokRisk: 52, surviveRate: 41, votes: "1표", memeRate: 72,
+          votesText: "첫인상 0~1표 (호불호 극단)",
+          desc: "표정 변화가 적고 과묵해 초반엔 답답함을 유발합니다. 하지만 흔들리지 않는 뚝심과 츤데레 매력으로 후반부에 강력한 마니아층을 형성하는 타입입니다.",
+          best: "정숙 (화끈한 리더)", worst: "옥순 (화려한 센터)"
+        }
+      },
+      F: {
+        A: {
+          name: "옥순", badge: "#화려한_비주얼센터", avatar: "👑",
+          quote: '"올킬? 그냥 평소 입던 대로 입고 나왔을 뿐인데요."',
+          godokRisk: 9, surviveRate: 68, votes: "3표", memeRate: 85,
+          votesText: "첫인상 3표 (압도적 센터)",
+          desc: "등장과 동시에 남성들의 몰표를 받는 로맨스의 주인공. 첫인상 0표 위험은 없으나, 여자방의 집중 견제와 청문회로 인한 심리적 피로도가 상당합니다.",
+          best: "영철 (본능 직진형)", worst: "상철 (순정 마이웨이)"
+        },
+        B: {
+          name: "정숙", badge: "#당당_걸크러시리더", avatar: "👠",
+          quote: '"인생 뭐 있어? 털고 가자! 오늘 밤 술 한잔해!"',
+          godokRisk: 46, surviveRate: 38, votes: "1표", memeRate: 74,
+          votesText: "첫인상 1표 (성격 호감)",
+          desc: "분위기를 주도하는 압도적 리더십의 소유자. 털털함으로 호감을 얻지만, 시간이 갈수록 남성들이 연애 상대가 아닌 '모셔야 할 큰누나'로 대하는 딜레마가 있습니다.",
+          best: "상철 (묵직한 순정파)", worst: "광수 (독자 지략가)"
+        },
+        C: {
+          name: "현숙", badge: "#단아_만인의호감형", avatar: "🌷",
+          quote: '"천천히 알아가요. 일상에서의 대화가 제일 편안해야죠."',
+          godokRisk: 14, surviveRate: 72, votes: "2표", memeRate: 20,
+          votesText: "첫인상 2표 (안정적 호감)",
+          desc: "단아함과 균형 잡힌 배려심으로 남녀 모두에게 호감을 얻습니다. 자극적인 도파민은 덜해도 장기적인 신뢰를 쌓아 최종 선택에서 가장 높은 성공률을 기록합니다.",
+          best: "영식 (단정 모범형)", worst: "영호 (감정 솔직파)"
+        },
+        D: {
+          name: "순자", badge: "#비타민_텐션폭발", avatar: "✨",
+          quote: '"오늘 밤 노래 한 곡 때려야죠! 텐션 올려!"',
+          godokRisk: 64, surviveRate: 29, votes: "1표", memeRate: 82,
+          votesText: "첫인상 1표 (밝은 에너지)",
+          desc: "지치지 않는 텐션으로 초반 분위기를 띄우는 무드메이커. 다만 감정이 너무 투명해 좋아하는 사람이 딴청을 피우면 속앓이하다 눈물을 터뜨리기 쉽습니다.",
+          best: "영식 (단정 모범형)", worst: "영수 (품격 맏형)"
+        },
+        E: {
+          name: "영숙", badge: "#도파민_감정서사", avatar: "🔮",
+          quote: '"내가 지금 왜 이런 대접을 받아야 하는데요? 택시 불러줘요."',
+          godokRisk: 82, surviveRate: 18, votes: "0~1표", memeRate: 96,
+          votesText: "첫인상 0~1표 (복합적 인상)",
+          desc: "기수의 서사와 화제성을 홀로 견인하는 폭풍의 눈. 깊은 몰입감을 가졌으나, 사소한 말 한마디에 꽂혀 거실을 서늘하게 얼어붙게 만드는 시청률 제조기입니다.",
+          best: "광수 (독자 지략가)", worst: "영철 (불도저 마초)"
+        },
+        F: {
+          name: "영자", badge: "#생활력_야무진똑순이", avatar: "💼",
+          quote: '"현실적인 조건 무시 못 하죠. 제 밥그릇은 제가 챙겨요."',
+          godokRisk: 42, surviveRate: 48, votes: "1표", memeRate: 55,
+          votesText: "첫인상 1표 (실속형 인상)",
+          desc: "자립심 강하고 현실 감각이 뛰어난 똑순이 타입. 너무 꼼꼼히 현실 조건을 따지다 보니 설렘보다는 안정적인 실속형 매칭으로 이어집니다.",
+          best: "영호 (애교 연하남)", worst: "영수 (품격 맏형)"
+        }
+      }
+    };
+
+    function startQuiz() {
+      document.getElementById('view-landing').classList.add('hidden');
+      document.getElementById('view-quiz').classList.remove('hidden');
+      currentStep = 0;
+      userAnswers.length = 0;
+      userUploadedPhoto = null;
+      renderQuestion();
+    }
+
+    function selectGender(gender) {
+      currentGender = gender;
+      const btnM = document.getElementById('gender-m');
+      const btnF = document.getElementById('gender-f');
+      if (gender === 'M') {
+        btnM.className = "py-2.5 text-xs font-black rounded-xl border border-[#3182F6] bg-blue-50 text-[#3182F6] transition-all";
+        btnF.className = "py-2.5 text-xs font-black rounded-xl border border-gray-200 bg-white text-gray-600 transition-all";
+      } else {
+        btnF.className = "py-2.5 text-xs font-black rounded-xl border border-rose-500 bg-rose-50 text-rose-600 transition-all";
+        btnM.className = "py-2.5 text-xs font-black rounded-xl border border-gray-200 bg-white text-gray-600 transition-all";
+      }
+      renderQuestion();
+    }
+
+    // 질문 및 선택지 렌더링 (가독성 극대화)
+    function renderQuestion() {
+      const qList = questionsDb[currentGender];
+      const q = qList[currentStep];
+
+      document.getElementById('quiz-step-text').innerText = `Q${currentStep + 1} / ${qList.length}`;
+      const progressPercent = Math.round(((currentStep + 1) / qList.length) * 100);
+      document.getElementById('quiz-percent-text').innerText = `${progressPercent}%`;
+      document.getElementById('quiz-progress-bar').style.width = `${progressPercent}%`;
+      
+      document.getElementById('gender-selector-container').style.display = (currentStep === 0) ? 'block' : 'none';
+      document.getElementById('question-category').innerText = q.category;
+      document.getElementById('question-title').innerText = q.title;
+
+      const container = document.getElementById('options-container');
+      container.innerHTML = '';
+
+      q.options.forEach((opt, idx) => {
+        const btn = document.createElement('button');
+        // 가독성 최적화: 여백 넉넉히(p-3.5), 좌측에 A/B/C 원형 뱃지, 폰트 14px(text-[14px]), 행간 여유
+        btn.className = "w-full text-left p-3.5 sm:p-4 rounded-2xl border border-gray-200 bg-white hover:border-[#3182F6] hover:bg-blue-50/40 active:scale-[0.99] transition-all duration-150 flex items-start gap-3 group shadow-sm";
+        btn.innerHTML = `
+          <span class="w-6 h-6 rounded-full bg-gray-100 group-hover:bg-[#3182F6] group-hover:text-white text-gray-500 text-xs font-black flex items-center justify-center flex-shrink-0 mt-0.5 transition-colors">
+            ${String.fromCharCode(65 + idx)}
+          </span>
+          <span class="text-[14px] font-semibold text-gray-800 leading-snug group-hover:text-gray-950 flex-1">
+            ${opt.text}
+          </span>
+        `;
+        btn.onclick = () => handleSelectOption(opt.type);
+        container.appendChild(btn);
+      });
+    }
+
+    function handleSelectOption(type) {
+      userAnswers.push(type);
+      const qList = questionsDb[currentGender];
+      if (currentStep < qList.length - 1) {
+        currentStep++;
+        renderQuestion();
+      } else {
+        showPhotoOptionScreen();
+      }
+    }
+
+    // 6문항 가중치 판별 알고리즘 (Q3 경쟁 대처 & Q5 갈등 대처에 최고 가중치)
+    function showPhotoOptionScreen() {
+      const scores = {};
+      const weights = [1.0, 1.2, 1.4, 1.0, 1.5, 1.1];
+
+      userAnswers.forEach((val, idx) => {
+        const w = weights[idx] || 1.0;
+        scores[val] = (scores[val] || 0) + w;
+      });
+
+      let dominantType = userAnswers[0];
+      let maxScore = 0;
+      for (const key in scores) {
+        if (scores[key] > maxScore) {
+          maxScore = scores[key];
+          dominantType = key;
+        }
+      }
+      calculatedDominantType = dominantType;
+
+      document.getElementById('view-quiz').classList.add('hidden');
+      document.getElementById('view-photo-option').classList.remove('hidden');
+    }
+
+    function handlePhotoUpload(event) {
+      const file = event.target.files[0];
+      if (!file) return;
+
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        userUploadedPhoto = e.target.result;
+        document.getElementById('photo-placeholder').classList.add('hidden');
+        const previewImg = document.getElementById('photo-preview-img');
+        previewImg.src = userUploadedPhoto;
+        previewImg.classList.remove('hidden');
+        document.getElementById('photo-change-badge').classList.remove('hidden');
+        document.getElementById('btn-submit-photo').classList.remove('hidden');
+      };
+      reader.readAsDataURL(file);
+    }
+
+    function proceedToLockedTeaser(withPhoto) {
+      if (!withPhoto) userUploadedPhoto = null;
+      document.getElementById('view-photo-option').classList.add('hidden');
+      document.getElementById('view-locked').classList.remove('hidden');
+    }
+
+    function openAdModal() {
+      const modal = document.getElementById('modal-ad');
+      const timerBadge = document.getElementById('ad-timer-badge');
+      const btnUnlock = document.getElementById('btn-ad-unlock');
+      const btnText = document.getElementById('btn-ad-text');
+      
+      modal.classList.remove('hidden');
+      let countdown = 5;
+      timerBadge.innerText = `${countdown}초 후 해제`;
+      btnText.innerText = `${countdown}초 후 잠금 해제`;
+      btnUnlock.disabled = true;
+      btnUnlock.className = "w-full py-3.5 px-4 bg-gray-200 text-gray-400 font-bold text-sm rounded-xl cursor-not-allowed";
+
+      clearInterval(adInterval);
+      adInterval = setInterval(() => {
+        countdown--;
+        if (countdown > 0) {
+          timerBadge.innerText = `${countdown}초 후 해제`;
+          btnText.innerText = `${countdown}초 후 잠금 해제`;
+        } else {
+          clearInterval(adInterval);
+          timerBadge.innerText = `시청 완료 ✓`;
+          btnText.innerText = `결과 바로 확인하기 🔓`;
+          btnUnlock.disabled = false;
+          btnUnlock.className = "w-full py-3.5 px-4 bg-[#3182F6] hover:bg-[#206fe0] active:scale-[0.98] text-white font-bold text-sm rounded-xl shadow-md transition-all cursor-pointer";
+          btnUnlock.onclick = unlockAndShowResult;
+        }
+      }, 1000);
+    }
+
+    function unlockAndShowResult() {
+      incrementCounter();
+      document.getElementById('modal-ad').classList.add('hidden');
+      document.getElementById('view-locked').classList.add('hidden');
+      document.getElementById('view-result').classList.remove('hidden');
+      renderResultCard(calculatedDominantType);
+    }
+
+    function renderResultCard(type) {
+      const data = resultsDb[currentGender][type] || resultsDb[currentGender]['A'];
+      
+      document.getElementById('res-badge').innerText = data.badge;
+      document.getElementById('res-name').innerText = `${data.name} (${currentGender === 'M' ? '남성' : '여성'})`;
+      document.getElementById('res-quote').innerText = data.quote;
+      document.getElementById('res-description').innerText = data.desc;
+      document.getElementById('res-best').innerText = data.best;
+      document.getElementById('res-worst').innerText = data.worst;
+
+      let finalRisk = data.godokRisk;
+      let finalSurvive = data.surviveRate;
+
+      const emojiWrapper = document.getElementById('res-avatar-emoji');
+      const photoFrame = document.getElementById('res-avatar-photo-frame');
+      const photoImg = document.getElementById('res-avatar-img');
+      const votesSub = document.getElementById('res-votes-sub');
+
+      if (userUploadedPhoto) {
+        emojiWrapper.classList.add('hidden');
+        photoFrame.classList.remove('hidden');
+        photoImg.src = userUploadedPhoto;
+        if (finalRisk > 60) {
+          finalRisk = Math.min(95, finalRisk + 3);
+        } else {
+          finalRisk = Math.max(8, finalRisk - 5);
+        }
+      } else {
+        emojiWrapper.classList.remove('hidden');
+        emojiWrapper.innerText = data.avatar;
+        photoFrame.classList.add('hidden');
+      }
+
+      document.getElementById('res-stat-risk').innerText = `${finalRisk}%`;
+      document.getElementById('res-stat-survive').innerText = `${finalSurvive}%`;
+      document.getElementById('res-stat-votes').innerText = data.votes;
+      document.getElementById('res-stat-meme').innerText = `${data.memeRate}%`;
+      votesSub.innerText = data.votesText;
+    }
+
+    function shareLink() {
+      if (navigator.share) {
+        navigator.share({
+          title: '내가 만약 연애 예능에 나간다면?',
+          text: '내 솔로나라 부캐 결과 나왔음! 너는 뭐 나오는지 해봐:',
+          url: window.location.href,
+        }).catch(() => {});
+      } else {
+        copyToClipboard();
+      }
+    }
+
+    function copyToClipboard() {
+      navigator.clipboard.writeText(window.location.href).then(() => {
+        alert('결과 링크가 복사되었습니다! 카톡이나 DM에 공유하세요.');
+      });
+    }
+
+    function resetQuiz() {
+      document.getElementById('view-result').classList.add('hidden');
+      document.getElementById('view-photo-option').classList.add('hidden');
+      document.getElementById('view-locked').classList.add('hidden');
+      document.getElementById('view-landing').classList.remove('hidden');
+      
+      userUploadedPhoto = null;
+      document.getElementById('photo-placeholder').classList.remove('hidden');
+      document.getElementById('photo-preview-img').classList.add('hidden');
+      document.getElementById('photo-change-badge').classList.add('hidden');
+      document.getElementById('btn-submit-photo').classList.add('hidden');
+      document.getElementById('photo-input').value = "";
+    }
+
+    window.addEventListener('DOMContentLoaded', updateParticipantCounter);
+  </script>
+</body>
+</html>
