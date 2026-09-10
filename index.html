@@ -4,13 +4,21 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
   <title>내가 만약 | 극사실주의 데이팅 빌리지 편</title>
+
+  <!-- [필수] 카카오톡 / SNS 링크 공유 미리보기 카드 (Open Graph) -->
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="만약 내가 연애 예능에 나간다면? | 솔로 빌리지 편" />
+  <meta property="og:description" content="첫인상 0표 고독정식 위험도와 내 현실 부캐 60초 만에 확인하기" />
+  <meta property="og:image" content="https://images.unsplash.com/photo-1516589178581-6cd7833ae3b2?w=800&auto=format&fit=crop&q=80" />
+  <meta property="og:url" content="https://whatif-delta.vercel.app/" />
+
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css" />
   <style>
     body {
       font-family: "Pretendard Variable", Pretendard, -apple-system, BlinkMacSystemFont, system-ui, Roboto, sans-serif;
       -webkit-tap-highlight-color: transparent;
-      word-break: keep-all; /* 한글 단어 쪼개짐 방지 전역 적용 */
+      word-break: keep-all;
     }
   </style>
 </head>
@@ -107,10 +115,9 @@
         </div>
       </section>
 
-      <!-- ================= [STEP 2] 6-QUESTION QUIZ (가독성 최적화) ================= -->
+      <!-- ================= [STEP 2] 6-QUESTION QUIZ ================= -->
       <section id="view-quiz" class="hidden px-5 pt-6 pb-8 flex flex-col flex-1">
         
-        <!-- Progress Bar -->
         <div class="mb-5">
           <div class="flex justify-between items-center mb-1.5">
             <span id="quiz-step-text" class="text-xs font-extrabold text-[#3182F6] tracking-wider uppercase">Q1 / 6</span>
@@ -121,7 +128,6 @@
           </div>
         </div>
 
-        <!-- Gender Selector (Q1 only) -->
         <div id="gender-selector-container" class="mb-5 p-3.5 bg-gray-50 rounded-2xl border border-gray-100">
           <label class="block text-xs font-bold text-gray-600 mb-2">출연할 내 캐릭터 성별을 선택해 주세요</label>
           <div class="grid grid-cols-2 gap-2">
@@ -130,7 +136,6 @@
           </div>
         </div>
 
-        <!-- Question Header -->
         <div class="mb-5">
           <span class="inline-block text-[11px] font-extrabold px-2.5 py-1 bg-blue-50 text-[#3182F6] rounded-lg mb-2 tracking-tight" id="question-category">
             Day 1. 입소 첫날
@@ -140,7 +145,6 @@
           </h2>
         </div>
 
-        <!-- Options Container -->
         <div id="options-container" class="space-y-2.5 flex-1"></div>
       </section>
 
@@ -404,7 +408,7 @@
       } catch (e) {}
     }
 
-    // 3박 4일 타임라인 기반 남/녀 6문항 정밀 데이터베이스 (문맥 단축 및 가독성 최적화)
+    // 3박 4일 타임라인 기반 남/녀 6문항 정밀 데이터베이스
     const questionsDb = {
       M: [
         {
@@ -682,7 +686,6 @@
       renderQuestion();
     }
 
-    // 질문 및 선택지 렌더링 (가독성 & 터치 UI 최적화)
     function renderQuestion() {
       const qList = questionsDb[currentGender];
       const q = qList[currentStep];
@@ -701,7 +704,6 @@
 
       q.options.forEach((opt, idx) => {
         const btn = document.createElement('button');
-        // 고대비 뱃지와 쾌적한 줄바꿈 설정
         btn.className = "w-full text-left p-3.5 sm:p-4 rounded-2xl border border-gray-200/90 bg-white active:bg-blue-50/50 active:border-[#3182F6] active:scale-[0.99] transition-all duration-150 flex items-center gap-3 shadow-sm";
         btn.innerHTML = `
           <span class="w-6 h-6 rounded-full bg-gray-100 text-gray-700 text-xs font-black flex items-center justify-center flex-shrink-0">
@@ -851,21 +853,27 @@
       votesSub.innerText = data.votesText;
     }
 
+    // 결과 맞춤형 공유 로직 (내 부캐명이 텍스트에 포함되어 공유됨)
     function shareLink() {
+      const data = resultsDb[currentGender][calculatedDominantType] || resultsDb[currentGender]['A'];
+      const shareTitle = `내가 만약 연애 예능에 나간다면?`;
+      const shareText = `야, 나 솔로나라 나가면 [${data.name}] 나온대 ㅋㅋㅋ\n첫인상 예상 득표: ${data.votes}, 고독정식 위험도: ${data.godokRisk}%\n너는 뭐 나오는지 해봐:`;
+
       if (navigator.share) {
         navigator.share({
-          title: '내가 만약 연애 예능에 나간다면?',
-          text: '내 솔로나라 부캐 결과 나왔음! 너는 뭐 나오는지 해봐:',
-          url: window.location.href,
+          title: shareTitle,
+          text: shareText,
+          url: 'https://whatif-delta.vercel.app/',
         }).catch(() => {});
       } else {
-        copyToClipboard();
+        copyToClipboard(shareText);
       }
     }
 
-    function copyToClipboard() {
-      navigator.clipboard.writeText(window.location.href).then(() => {
-        alert('결과 링크가 복사되었습니다! 카톡이나 DM에 공유하세요.');
+    function copyToClipboard(customText) {
+      const copyContent = customText ? `${customText} https://whatif-delta.vercel.app/` : window.location.href;
+      navigator.clipboard.writeText(copyContent).then(() => {
+        alert('결과 링크가 복사되었습니다! 카톡이나 DM에 붙여넣어 공유하세요.');
       });
     }
 
