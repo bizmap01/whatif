@@ -82,10 +82,20 @@
           </div>
         </div>
 
-        <div class="p-4 rounded-2xl bg-gray-50 border border-gray-100 space-y-2 mb-8 text-xs text-gray-700 font-medium">
-          <div class="flex items-center gap-2"><span class="text-emerald-500 font-bold">✓</span> 3박 4일 현실 고증 정밀 설문 (6문항)</div>
-          <div class="flex items-center gap-2"><span class="text-emerald-500 font-bold">✓</span> 첫인상 0표부터 3표까지 현실적인 득표 예측</div>
-          <div class="flex items-center gap-2"><span class="text-emerald-500 font-bold">✓</span> [선택] 사진 업로드 시 첫인상 관상 정밀 분석</div>
+        <!-- [개선된 안내 카드] 체크박스 오해를 없앤 정보형 안내 박스 -->
+        <div class="p-4 rounded-2xl bg-gray-50 border border-gray-100 space-y-3 mb-8 text-xs text-gray-600">
+          <div class="flex items-center gap-2.5">
+            <span class="w-6 h-6 rounded-lg bg-white shadow-sm border border-gray-150 flex items-center justify-center text-xs flex-shrink-0">⏱️</span>
+            <p class="leading-tight"><strong class="text-gray-900 font-bold">소요 시간:</strong> 약 90초 (3박 4일 시뮬레이션 6문항)</p>
+          </div>
+          <div class="flex items-center gap-2.5">
+            <span class="w-6 h-6 rounded-lg bg-white shadow-sm border border-gray-150 flex items-center justify-center text-xs flex-shrink-0">🎯</span>
+            <p class="leading-tight"><strong class="text-gray-900 font-bold">정밀 판별:</strong> 첫인상 0표부터 3표까지 현실적인 득표 예측</p>
+          </div>
+          <div class="flex items-center gap-2.5">
+            <span class="w-6 h-6 rounded-lg bg-white shadow-sm border border-gray-150 flex items-center justify-center text-xs flex-shrink-0">📸</span>
+            <p class="leading-tight"><strong class="text-gray-900 font-bold">선택 사항:</strong> 사진 등록 시 첫인상 관상 정밀 분석 지원</p>
+          </div>
         </div>
 
         <div class="mt-auto space-y-3">
@@ -96,7 +106,7 @@
         </div>
       </section>
 
-      <!-- ================= [STEP 2] 6-QUESTION QUIZ (가독성 개편) ================= -->
+      <!-- ================= [STEP 2] 6-QUESTION QUIZ ================= -->
       <section id="view-quiz" class="hidden px-5 pt-6 pb-8 flex flex-col flex-1">
         
         <!-- Progress Bar -->
@@ -119,7 +129,7 @@
           </div>
         </div>
 
-        <!-- Question Header (High Contrast & Clear Visual Anchor) -->
+        <!-- Question Header -->
         <div class="mb-5">
           <span class="inline-block text-[11px] font-extrabold px-2.5 py-1 bg-blue-50 text-[#3182F6] rounded-lg mb-2 tracking-tight" id="question-category">
             Day 1. 입소 첫날
@@ -129,7 +139,7 @@
           </h2>
         </div>
 
-        <!-- Options Container (Readable Cards with Index Badges) -->
+        <!-- Options Container -->
         <div id="options-container" class="space-y-2.5 flex-1"></div>
       </section>
 
@@ -671,7 +681,6 @@
       renderQuestion();
     }
 
-    // 질문 및 선택지 렌더링 (가독성 극대화)
     function renderQuestion() {
       const qList = questionsDb[currentGender];
       const q = qList[currentStep];
@@ -690,7 +699,6 @@
 
       q.options.forEach((opt, idx) => {
         const btn = document.createElement('button');
-        // 가독성 최적화: 여백 넉넉히(p-3.5), 좌측에 A/B/C 원형 뱃지, 폰트 14px(text-[14px]), 행간 여유
         btn.className = "w-full text-left p-3.5 sm:p-4 rounded-2xl border border-gray-200 bg-white hover:border-[#3182F6] hover:bg-blue-50/40 active:scale-[0.99] transition-all duration-150 flex items-start gap-3 group shadow-sm";
         btn.innerHTML = `
           <span class="w-6 h-6 rounded-full bg-gray-100 group-hover:bg-[#3182F6] group-hover:text-white text-gray-500 text-xs font-black flex items-center justify-center flex-shrink-0 mt-0.5 transition-colors">
@@ -716,7 +724,6 @@
       }
     }
 
-    // 6문항 가중치 판별 알고리즘 (Q3 경쟁 대처 & Q5 갈등 대처에 최고 가중치)
     function showPhotoOptionScreen() {
       const scores = {};
       const weights = [1.0, 1.2, 1.4, 1.0, 1.5, 1.1];
