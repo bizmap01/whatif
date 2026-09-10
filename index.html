@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
   <title>내가 만약 | 극사실주의 데이팅 빌리지 편</title>
 
-  <!-- [필수] 카카오톡 / SNS 링크 공유 미리보기 카드 (Open Graph) -->
+  <!-- 카카오톡 / SNS 링크 공유 미리보기 카드 (Open Graph) -->
   <meta property="og:type" content="website" />
   <meta property="og:title" content="만약 내가 연애 예능에 나간다면? | 솔로 빌리지 편" />
   <meta property="og:description" content="첫인상 0표 고독정식 위험도와 내 현실 부캐 60초 만에 확인하기" />
@@ -271,6 +271,13 @@
 
       <!-- ================= [STEP 5] UNLOCKED RESULT ================= -->
       <section id="view-result" class="hidden px-5 pt-6 pb-12 flex flex-col flex-1">
+        
+        <!-- 친구 공유 링크로 들어왔을 때만 노출되는 배너 -->
+        <div id="shared-notice-banner" class="hidden mb-4 p-3.5 bg-blue-50 border border-blue-200 rounded-2xl text-center shadow-sm">
+          <p class="text-xs font-extrabold text-[#3182F6]">👀 친구가 공유한 솔로 빌리지 부캐 결과입니다!</p>
+          <p class="text-[11px] text-gray-600 mt-0.5 font-medium">나는 어떤 캐릭터일까? 지금 바로 내 부캐를 확인해 보세요.</p>
+        </div>
+
         <div class="text-center mb-3">
           <span class="text-[11px] font-bold px-3 py-1 bg-blue-50 text-[#3182F6] rounded-full border border-blue-100">
             생존 분석 리포트 발급 완료
@@ -348,6 +355,11 @@
 
         <!-- Social Action Buttons -->
         <div class="space-y-2.5">
+          <!-- 친구 링크로 들어온 사람을 위한 눈에 띄는 시작 버튼 -->
+          <button id="btn-take-quiz-from-shared" onclick="resetQuiz()" class="hidden w-full py-4 px-5 bg-[#3182F6] hover:bg-[#206fe0] active:scale-[0.98] text-white font-black text-sm rounded-2xl shadow-lg shadow-blue-500/20 flex items-center justify-center gap-2 transition-all">
+            <span>🔥 나도 내 부캐 알아보기 (60초 컷)</span>
+          </button>
+
           <button onclick="shareLink()" class="w-full py-4 px-5 bg-[#FEE500] hover:bg-[#FADA0A] active:scale-[0.98] text-[#191919] font-bold text-sm rounded-2xl flex items-center justify-center gap-2 shadow-sm transition-all">
             <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24"><path d="M12 3c-4.97 0-9 3.185-9 7.115 0 2.557 1.708 4.8 4.27 6.054-.188.702-.682 2.545-.78 2.94-.122.493.18.486.378.354.156-.104 2.483-1.688 3.49-2.373.53.078 1.077.119 1.642.119 4.97 0 9-3.185 9-7.115S16.97 3 12 3z"/></svg>
             <span>친구에게 링크 보내고 결과 비교하기</span>
@@ -664,6 +676,11 @@
     };
 
     function startQuiz() {
+      // 주소창에 남아있는 쿼리 파라미터(?r=...&g=...) 깔끔하게 제거
+      window.history.replaceState({}, document.title, window.location.pathname);
+      document.getElementById('shared-notice-banner').classList.add('hidden');
+      document.getElementById('btn-take-quiz-from-shared').classList.add('hidden');
+
       document.getElementById('view-landing').classList.add('hidden');
       document.getElementById('view-quiz').classList.remove('hidden');
       currentStep = 0;
@@ -810,6 +827,11 @@
       document.getElementById('modal-ad').classList.add('hidden');
       document.getElementById('view-locked').classList.add('hidden');
       document.getElementById('view-result').classList.remove('hidden');
+      
+      // 내 결과가 확정되었을 때 브라우저 주소창에 파라미터 반영 (?r=A&g=M)
+      const newUrl = getResultUrl();
+      window.history.replaceState({ path: newUrl }, '', newUrl);
+
       renderResultCard(calculatedDominantType);
     }
 
@@ -853,36 +875,53 @@
       votesSub.innerText = data.votesText;
     }
 
-    // 결과 맞춤형 공유 로직 (내 부캐명이 텍스트에 포함되어 공유됨)
+    // 결과 고유 주소(URL) 생성 함수
+    function getResultUrl() {
+      const baseUrl = window.location.origin + window.location.pathname;
+      return `${baseUrl}?r=${calculatedDominantType}&g=${currentGender}`;
+    }
+
+    // 결과 맞춤형 공유 로직 (내 고유 결과 URL을 복사/전송)
     function shareLink() {
       const data = resultsDb[currentGender][calculatedDominantType] || resultsDb[currentGender]['A'];
+      const targetUrl = getResultUrl();
       const shareTitle = `내가 만약 연애 예능에 나간다면?`;
-      const shareText = `야, 나 솔로나라 나가면 [${data.name}] 나온대 ㅋㅋㅋ\n첫인상 예상 득표: ${data.votes}, 고독정식 위험도: ${data.godokRisk}%\n너는 뭐 나오는지 해봐:`;
+      const shareText = `야, 나 솔로나라 나가면 [${data.name}] 나온대 ㅋㅋㅋ\n첫인상 예상 득표: ${data.votes}, 고독정식 위험도: ${data.godokRisk}%\n내 결과 보고 너도 해봐:`;
 
       if (navigator.share) {
         navigator.share({
           title: shareTitle,
           text: shareText,
-          url: 'https://whatif-delta.vercel.app/',
+          url: targetUrl,
         }).catch(() => {});
       } else {
-        copyToClipboard(shareText);
+        copyToClipboard();
       }
     }
 
-    function copyToClipboard(customText) {
-      const copyContent = customText ? `${customText} https://whatif-delta.vercel.app/` : window.location.href;
+    function copyToClipboard() {
+      const targetUrl = getResultUrl();
+      const data = resultsDb[currentGender][calculatedDominantType] || resultsDb[currentGender]['A'];
+      const copyContent = `[내가 만약 솔로나라에 나간다면?]\n내 부캐는 [${data.name}]! (첫인상: ${data.votes})\n친구 결과 보기 👉 ${targetUrl}`;
+      
       navigator.clipboard.writeText(copyContent).then(() => {
-        alert('결과 링크가 복사되었습니다! 카톡이나 DM에 붙여넣어 공유하세요.');
+        alert('내 결과 전용 링크가 복사되었습니다! 카톡이나 DM에 붙여넣어 공유하세요.');
       });
     }
 
     function resetQuiz() {
+      // 주소창 파라미터 초기화
+      window.history.replaceState({}, document.title, window.location.pathname);
+
       document.getElementById('view-result').classList.add('hidden');
       document.getElementById('view-photo-option').classList.add('hidden');
       document.getElementById('view-locked').classList.add('hidden');
+      document.getElementById('view-quiz').classList.add('hidden');
       document.getElementById('view-landing').classList.remove('hidden');
       
+      document.getElementById('shared-notice-banner').classList.add('hidden');
+      document.getElementById('btn-take-quiz-from-shared').classList.add('hidden');
+
       userUploadedPhoto = null;
       document.getElementById('photo-placeholder').classList.remove('hidden');
       document.getElementById('photo-preview-img').classList.add('hidden');
@@ -891,7 +930,32 @@
       document.getElementById('photo-input').value = "";
     }
 
-    window.addEventListener('DOMContentLoaded', updateParticipantCounter);
+    // 페이지 접속 시 공유 링크(?r=...&g=...)인지 확인하는 핵심 함수
+    function checkSharedResult() {
+      const urlParams = new URLSearchParams(window.location.search);
+      const sharedR = urlParams.get('r');
+      const sharedG = urlParams.get('g');
+
+      // 유효한 결과 파라미터가 있는 경우 바로 결과 화면을 렌더링
+      if (sharedR && sharedG && resultsDb[sharedG] && resultsDb[sharedG][sharedR]) {
+        currentGender = sharedG;
+        calculatedDominantType = sharedR;
+
+        document.getElementById('view-landing').classList.add('hidden');
+        document.getElementById('view-result').classList.remove('hidden');
+
+        // 친구가 공유한 링크임을 알리는 안내 배너 및 '나도 하러가기' 버튼 노출
+        document.getElementById('shared-notice-banner').classList.remove('hidden');
+        document.getElementById('btn-take-quiz-from-shared').classList.remove('hidden');
+
+        renderResultCard(sharedR);
+      }
+    }
+
+    window.addEventListener('DOMContentLoaded', () => {
+      updateParticipantCounter();
+      checkSharedResult(); // 공유 링크 체크 실행
+    });
   </script>
 </body>
 </html>
