@@ -110,7 +110,7 @@
         <div class="mt-auto space-y-3">
           <button onclick="startQuiz()" class="w-full py-4 px-6 bg-[#3182F6] hover:bg-[#206fe0] active:scale-[0.98] transition-all text-white font-bold text-base rounded-2xl shadow-lg shadow-blue-500/20 flex items-center justify-center gap-2">
             <span>60초 만에 내 부캐 확인하기</span>
-            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"></path></svg>
+            <svg class="w-4 h-4 fill-none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"></path></svg>
           </button>
         </div>
       </section>
@@ -353,9 +353,8 @@
           </div>
         </div>
 
-        <!-- ================= [분기 1: 본인 테스트 완료 시 노출되는 영역] ================= -->
+        <!-- ================= [분기 1: 본인 테스트 완료 시 노출] ================= -->
         <div id="owner-action-group" class="space-y-3">
-          <!-- 화면에서 확인하는 내 결과 전용 주소 박스 -->
           <div class="p-3.5 bg-gray-50 rounded-2xl border border-gray-200">
             <div class="flex items-center justify-between mb-1.5">
               <span class="text-[11px] font-bold text-gray-500">🔗 내 결과 전용 주소</span>
@@ -385,11 +384,11 @@
           </div>
         </div>
 
-        <!-- ================= [분기 2: 친구가 링크를 타고 들어왔을 때만 단독 노출되는 영역] ================= -->
+        <!-- ================= [분기 2: 친구가 링크를 타고 들어왔을 때 단독 노출] ================= -->
         <div id="visitor-action-group" class="hidden space-y-2.5">
           <button onclick="startQuiz()" class="w-full py-4 px-5 bg-[#3182F6] hover:bg-[#206fe0] active:scale-[0.98] text-white font-black text-base rounded-2xl shadow-xl shadow-blue-500/25 flex items-center justify-center gap-2 transition-all">
             <span>🔥 나도 내 부캐 알아보기 (60초 컷)</span>
-            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"></path></svg>
+            <svg class="w-4 h-4 fill-none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"></path></svg>
           </button>
           <button onclick="resetQuiz()" class="w-full py-2.5 text-center text-xs font-semibold text-gray-400 hover:text-gray-600">
             처음 화면으로 가기
@@ -697,7 +696,6 @@
     };
 
     function startQuiz() {
-      // 주소창 파라미터 완전 제거하고 깔끔하게 퀴즈 시작
       window.history.replaceState(null, '', window.location.pathname);
       
       document.getElementById('shared-notice-banner').classList.add('hidden');
@@ -847,19 +845,16 @@
       }, 1000);
     }
 
-    // [본인이 직접 퀴즈를 풀고 결과를 해제했을 때 실행]
     function unlockAndShowResult() {
       incrementCounter();
       document.getElementById('modal-ad').classList.add('hidden');
       document.getElementById('view-locked').classList.add('hidden');
       document.getElementById('view-result').classList.remove('hidden');
       
-      // 본인 전용 액션 영역 노출 & 방문자 전용 영역 숨김
       document.getElementById('shared-notice-banner').classList.add('hidden');
       document.getElementById('owner-action-group').classList.remove('hidden');
       document.getElementById('visitor-action-group').classList.add('hidden');
 
-      // 브라우저 주소창에 ?r=...&g=... 반영
       const queryStr = `?r=${calculatedDominantType}&g=${currentGender}`;
       window.history.replaceState(null, '', queryStr);
 
@@ -905,7 +900,6 @@
       document.getElementById('res-stat-meme').innerText = `${data.memeRate}%`;
       votesSub.innerText = data.votesText;
 
-      // 화면 내 링크 박스에 주소 삽입
       const fullUrl = `${window.location.origin}${window.location.pathname}?r=${type}&g=${currentGender}`;
       const directInput = document.getElementById('direct-result-url');
       if (directInput) {
@@ -917,11 +911,12 @@
       return `${window.location.origin}${window.location.pathname}?r=${calculatedDominantType}&g=${currentGender}`;
     }
 
+    // 모바일 OS 기본 공유창 호출 (카톡/인스타 DM 등)
     function shareLink() {
       const data = resultsDb[currentGender][calculatedDominantType] || resultsDb[currentGender]['A'];
       const targetUrl = getResultUrl();
       const shareTitle = `내가 만약 연애 예능에 나간다면?`;
-      const shareText = `야, 나 솔로나라 나가면 [${data.name}] 나온대 ㅋㅋㅋ\n첫인상 예상 득표: ${data.votes}, 고독정식 위험도: ${data.godokRisk}%\n내 결과 보고 너도 해봐:`;
+      const shareText = `야, 나 솔로나라 나가면 [${data.name}] 나온대 ㅋㅋㅋ\n첫인상 예상 득표: ${data.votes} / 고독정식 위험도: ${data.godokRisk}%\n\n내 결과 보고 너도 해봐👇`;
 
       if (navigator.share) {
         navigator.share({
@@ -934,10 +929,13 @@
       }
     }
 
+    // [핵심] 텍스트 결과 + 단독 링크 줄바꿈 복사 로직
     function copyToClipboard() {
       const targetUrl = getResultUrl();
       const data = resultsDb[currentGender][calculatedDominantType] || resultsDb[currentGender]['A'];
-      const copyContent = `[내가 만약 솔로나라에 나간다면?]\n내 부캐는 [${data.name}]! (첫인상: ${data.votes})\n친구 결과 보기 👉 ${targetUrl}`;
+      
+      // 카카오톡이 링크를 명확히 분리 인식하도록 첫 줄 결과 텍스트와 마지막 줄 URL을 깔끔하게 정렬
+      const copyContent = `[내가 만약 솔로나라에 나간다면?]\n내 부캐는 [${data.name}]! (첫인상: ${data.votes})\n고독정식 위험도: ${data.godokRisk}%\n\n친구 결과 확인하기 👇\n${targetUrl}`;
       
       navigator.clipboard.writeText(copyContent).then(() => {
         const badge = document.getElementById('copy-badge-text');
@@ -945,7 +943,7 @@
           badge.classList.remove('hidden');
           setTimeout(() => badge.classList.add('hidden'), 2500);
         }
-        alert('내 결과 전용 링크가 복사되었습니다! 카톡이나 DM에 붙여넣어 공유하세요.');
+        alert(`[${data.name}] 결과와 전용 링크가 복사되었습니다!\n카톡에 붙여넣어 공유하세요.`);
       });
     }
 
@@ -970,7 +968,6 @@
       document.getElementById('photo-input').value = "";
     }
 
-    // [핵심] 접속 시 주소창에 친구 결과 파라미터(?r=...&g=...)가 있는 경우 분기 처리
     function checkSharedResult() {
       const urlParams = new URLSearchParams(window.location.search);
       const sharedR = urlParams.get('r');
@@ -980,16 +977,11 @@
         currentGender = sharedG;
         calculatedDominantType = sharedR;
 
-        // 첫 화면 숨기고 바로 결과 화면 렌더링
         document.getElementById('view-landing').classList.add('hidden');
         document.getElementById('view-result').classList.remove('hidden');
 
-        // 친구 방문자 모드로 화면 전환:
-        // 1. 상단 '친구가 공유한 결과입니다' 배너 표시
         document.getElementById('shared-notice-banner').classList.remove('hidden');
-        // 2. 링크 복사 박스/카톡 공유 버튼 완전히 숨김
         document.getElementById('owner-action-group').classList.add('hidden');
-        // 3. '나도 내 부캐 알아보기' 파란색 큰 버튼만 단독 노출
         document.getElementById('visitor-action-group').classList.remove('hidden');
 
         renderResultCard(sharedR);
