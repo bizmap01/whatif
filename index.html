@@ -966,20 +966,16 @@
       return `https://whatif-delta.vercel.app/?r=${calculatedDominantType}&g=${currentGender}`;
     }
 
-    // [노란색 버튼: 스마트폰 기본 시스템 공유창 호출]
+    // [노란색 버튼: 시스템 공유창 호출 (PASS 앱 방지용 표준 API)]
     function shareLink() {
       const data = resultsDb[currentGender][calculatedDominantType] || resultsDb[currentGender]['A'];
       const targetUrl = getResultUrl();
       const shareTitle = `만약 내가 연애 예능에 나간다면?`;
-      const shareText = `야, 나 솔로나라 나가면 [${data.name}] 나온대 ㅋㅋㅋ\n첫인상 예상 득표: ${data.votes} / 고독정식 위험도: ${data.godokRisk}%\n\n내 결과 보고 너도 해봐👇`;
+      const shareText = `야, 나 솔로나라 나가면 [${data.name}] 나온대 ㅋㅋㅋ\n첫인상 예상 득표: ${data.votes} / 고독정식 위험도: ${data.godokRisk}%\n\n내 결과 보고 너도 해봐👇\n${targetUrl}`;
 
       if (window.AIT && typeof window.AIT.share === 'function') {
         try {
-          window.AIT.share({
-            title: shareTitle,
-            text: shareText,
-            url: targetUrl
-          });
+          window.AIT.share({ title: shareTitle, text: shareText, url: targetUrl });
           return;
         } catch (e) {}
       }
@@ -991,27 +987,15 @@
           url: targetUrl,
         }).catch((err) => {
           if (err && err.name === 'AbortError') return;
-          fallbackSystemShare(shareTitle, shareText);
+          copyToClipboard();
         });
         return;
       }
 
-      fallbackSystemShare(shareTitle, shareText);
-    }
-
-    function fallbackSystemShare(title, text) {
-      const isAndroid = /Android/i.test(navigator.userAgent);
-      if (isAndroid) {
-        try {
-          const intentUri = `intent:#Intent;action=android.intent.action.SEND;type=text/plain;S.android.intent.extra.TEXT=${encodeURIComponent(text)};S.android.intent.extra.SUBJECT=${encodeURIComponent(title)};end`;
-          window.location.href = intentUri;
-          return;
-        } catch (e) {}
-      }
       copyToClipboard();
     }
 
-    // [회색 버튼: 클립보드 복사 전용 (토스트 알림)]
+    // [회색 버튼: 클립보드 복사 전용]
     function copyToClipboard() {
       const targetUrl = getResultUrl();
       const data = resultsDb[currentGender][calculatedDominantType] || resultsDb[currentGender]['A'];
