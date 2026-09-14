@@ -347,7 +347,7 @@
 
         <!-- ================= [2개 버튼 체제] ================= -->
         <div id="owner-action-group" class="space-y-2.5">
-          <!-- 1. 메인: 카톡 / 네이티브 공유 버튼 (누르면 하단에 카톡/대화방 선택 시트 즉시 노출) -->
+          <!-- 1. 메인: 스마트폰 시스템 공유창(메시지, 카톡 등) 호출 버튼 -->
           <button onclick="shareLink()" class="w-full py-4 px-5 bg-[#FEE500] hover:bg-[#FADA0A] active:scale-[0.98] text-[#191919] font-black text-sm rounded-2xl flex items-center justify-center gap-2 shadow-sm transition-all">
             <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24">
               <path d="M12 3c-4.97 0-9 3.185-9 7.115 0 2.557 1.708 4.8 4.27 6.054-.188.702-.682 2.545-.78 2.94-.122.493.18.486.378.354.156-.104 2.483-1.688 3.49-2.373.53.078 1.077.119 1.642.119 4.97 0 9-3.185 9-7.115S16.97 3 12 3z"/>
@@ -355,7 +355,7 @@
             <span>친구에게 링크 보내고 결과 비교하기</span>
           </button>
           
-          <!-- 2. 서브: 클립보드 복사 버튼 (토스 커스텀 토스트 알림) -->
+          <!-- 2. 서브: 클립보드 복사 전용 버튼 (플로팅 토스트 안내) -->
           <button onclick="copyToClipboard()" class="w-full py-3.5 px-5 bg-gray-100 hover:bg-gray-200 active:scale-[0.98] text-gray-800 font-bold text-xs rounded-xl flex items-center justify-center gap-1.5 transition-all">
             <span>📋 내 결과 링크 복사하기</span>
           </button>
@@ -413,7 +413,7 @@
     const COUNTER_NAMESPACE = 'what-if-solo-village-2026';
     const COUNTER_KEY = 'participant_count';
 
-    // [토스트 알림 함수: 브라우저 기본 alert 대체]
+    // [토스트 알림 함수: 브라우저 alert 대체]
     function showToast(message) {
       const toast = document.getElementById('custom-toast');
       const toastMsg = document.getElementById('custom-toast-msg');
@@ -951,28 +951,58 @@
       return `${window.location.origin}${window.location.pathname}?r=${calculatedDominantType}&g=${currentGender}`;
     }
 
-    // [노란색 버튼: 안드로이드 네이티브 공유창 즉시 호출 (카카오톡 대화방으로 바로 전송)]
+    // [노란색 버튼: 스마트폰 기본 시스템 공유창(메시지, 카톡, 인스타 등 전체 목록) 즉시 호출]
     function shareLink() {
       const data = resultsDb[currentGender][calculatedDominantType] || resultsDb[currentGender]['A'];
       const targetUrl = getResultUrl();
       const shareTitle = `만약 내가 연애 예능에 나간다면?`;
-      const shareText = `야, 나 솔로나라 나가면 [${data.name}] 나온대 ㅋㅋㅋ\n첫인상: ${data.votes} / 고독정식 위험도: ${data.godokRisk}%\n\n내 결과 보고 너도 해봐👇\n${targetUrl}`;
+      const shareText = `야, 나 솔로나라 나가면 [${data.name}] 나온대 ㅋㅋㅋ\n첫인상 예상 득표: ${data.votes} / 고독정식 위험도: ${data.godokRisk}%\n\n내 결과 보고 너도 해봐👇\n${targetUrl}`;
 
-      // 터치 이벤트 발생 즉시 시스템 공유창을 띄워 브라우저 권한 제재를 피합니다.
+      // 1) 토스 네이티브 공유 지원 시 즉시 호출
+      if (window.AIT && typeof window.AIT.share === 'function') {
+        try {
+          window.AIT.share({
+            title: shareTitle,
+            text: shareText,
+            url: targetUrl
+          });
+          return;
+        } catch (e) {}
+      }
+
+      // 2) 브라우저 기본 Web Share API (모바일 사파리, 안드로이드 크롬 등)
       if (navigator.share) {
         navigator.share({
           title: shareTitle,
           text: shareText,
           url: targetUrl,
-        }).catch(() => {
-          // 공유 시트에서 사용자가 취소한 경우는 무시합니다.
+        }).catch((err) => {
+          if (err && err.name === 'AbortError') return; // 유저 취소 시 중단
+          fallbackSystemShare(shareTitle, shareText);
         });
-      } else {
-        copyToClipboard();
+        return;
       }
+
+      // 3) 토스 웹뷰 / 안드로이드 웹뷰: OS 시스템 공유창 강제 호출
+      fallbackSystemShare(shareTitle, shareText);
     }
 
-    // [회색 버튼: 링크 복사 전용 (토스트 알림)]
+    function fallbackSystemShare(title, text) {
+      const isAndroid = /Android/i.test(navigator.userAgent);
+      if (isAndroid) {
+        try {
+          // 안드로이드 OS의 ACTION_SEND 인텐트로 메시지·카톡 등 시스템 공유창을 직접 호출합니다.
+          const intentUri = `intent:#Intent;action=android.intent.action.SEND;type=text/plain;S.android.intent.extra.TEXT=${encodeURIComponent(text)};S.android.intent.extra.SUBJECT=${encodeURIComponent(title)};end`;
+          window.location.href = intentUri;
+          return;
+        } catch (e) {}
+      }
+
+      // 4) PC 또는 미지원 기기: 클립보드 복사
+      copyToClipboard();
+    }
+
+    // [회색 버튼: 클립보드 복사 전용 (토스트 알림)]
     function copyToClipboard() {
       const targetUrl = getResultUrl();
       const data = resultsDb[currentGender][calculatedDominantType] || resultsDb[currentGender]['A'];
@@ -989,7 +1019,6 @@
       }
     }
 
-    // 구형 기기용 복사 함수
     function fallbackCopyText(text) {
       const textArea = document.createElement("textarea");
       textArea.value = text;
