@@ -360,14 +360,14 @@
           </div>
         </div>
 
-        <!-- ================= [2개 버튼 체제] ================= -->
+        <!-- ================= [2개 버튼 체제: 카카오톡 직행 + 복사 토스트] ================= -->
         <div id="owner-action-group" class="space-y-2.5">
-          <!-- 1. 메인: 카톡 / 시스템 공유창 호출 버튼 -->
+          <!-- 1. 메인: 카카오톡 앱 직접 호출 버튼 (패스 앱 방지 및 카톡 직행) -->
           <button onclick="shareLink()" class="w-full py-4 px-5 bg-[#FEE500] hover:bg-[#FADA0A] active:scale-[0.98] text-[#191919] font-black text-sm rounded-2xl flex items-center justify-center gap-2 shadow-sm transition-all">
             <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24">
               <path d="M12 3c-4.97 0-9 3.185-9 7.115 0 2.557 1.708 4.8 4.27 6.054-.188.702-.682 2.545-.78 2.94-.122.493.18.486.378.354.156-.104 2.483-1.688 3.49-2.373.53.078 1.077.119 1.642.119 4.97 0 9-3.185 9-7.115S16.97 3 12 3z"/>
             </svg>
-            <span>친구에게 링크 보내고 결과 비교하기</span>
+            <span>친구에게 카톡 보내고 결과 비교하기</span>
           </button>
           
           <!-- 2. 서브: 클립보드 복사 전용 버튼 (플로팅 토스트 안내) -->
@@ -966,36 +966,23 @@
       return `https://whatif-delta.vercel.app/?r=${calculatedDominantType}&g=${currentGender}`;
     }
 
-    // [노란색 버튼: 시스템 공유창 호출 (PASS 앱 방지용 표준 API)]
+    // [노란색 버튼: 카카오톡 앱 직접 실행 (카카오링크 URL 스킴)]
     function shareLink() {
       const data = resultsDb[currentGender][calculatedDominantType] || resultsDb[currentGender]['A'];
       const targetUrl = getResultUrl();
-      const shareTitle = `만약 내가 연애 예능에 나간다면?`;
       const shareText = `야, 나 솔로나라 나가면 [${data.name}] 나온대 ㅋㅋㅋ\n첫인상 예상 득표: ${data.votes} / 고독정식 위험도: ${data.godokRisk}%\n\n내 결과 보고 너도 해봐👇\n${targetUrl}`;
 
-      if (window.AIT && typeof window.AIT.share === 'function') {
-        try {
-          window.AIT.share({ title: shareTitle, text: shareText, url: targetUrl });
-          return;
-        } catch (e) {}
+      // 토스 인앱 및 안드로이드/아이폰 환경에서 카카오톡 앱의 친구 선택창을 바로 엽니다.
+      const kakaoScheme = `kakaotalk://send?text=${encodeURIComponent(shareText)}`;
+      
+      try {
+        window.location.href = kakaoScheme;
+      } catch (e) {
+        copyToClipboard();
       }
-
-      if (navigator.share) {
-        navigator.share({
-          title: shareTitle,
-          text: shareText,
-          url: targetUrl,
-        }).catch((err) => {
-          if (err && err.name === 'AbortError') return;
-          copyToClipboard();
-        });
-        return;
-      }
-
-      copyToClipboard();
     }
 
-    // [회색 버튼: 클립보드 복사 전용]
+    // [회색 버튼: 클립보드 복사 전용 (토스트 알림)]
     function copyToClipboard() {
       const targetUrl = getResultUrl();
       const data = resultsDb[currentGender][calculatedDominantType] || resultsDb[currentGender]['A'];
