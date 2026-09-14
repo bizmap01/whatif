@@ -347,7 +347,7 @@
 
         <!-- ================= [2개 버튼 체제] ================= -->
         <div id="owner-action-group" class="space-y-2.5">
-          <!-- 1. 메인: 카톡 / 네이티브 공유 버튼 (누르면 이전처럼 하단에 카톡 대화방 선택창 즉시 노출) -->
+          <!-- 1. 메인: 카톡 앱 다이렉트 전송 버튼 -->
           <button onclick="shareLink()" class="w-full py-4 px-5 bg-[#FEE500] hover:bg-[#FADA0A] active:scale-[0.98] text-[#191919] font-black text-sm rounded-2xl flex items-center justify-center gap-2 shadow-sm transition-all">
             <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24">
               <path d="M12 3c-4.97 0-9 3.185-9 7.115 0 2.557 1.708 4.8 4.27 6.054-.188.702-.682 2.545-.78 2.94-.122.493.18.486.378.354.156-.104 2.483-1.688 3.49-2.373.53.078 1.077.119 1.642.119 4.97 0 9-3.185 9-7.115S16.97 3 12 3z"/>
@@ -355,7 +355,7 @@
             <span>친구에게 링크 보내고 결과 비교하기</span>
           </button>
           
-          <!-- 2. 서브: 클립보드 복사 버튼 (alert 대신 깔끔한 토스트 노출) -->
+          <!-- 2. 서브: 클립보드 복사 버튼 (토스 커스텀 토스트 알림) -->
           <button onclick="copyToClipboard()" class="w-full py-3.5 px-5 bg-gray-100 hover:bg-gray-200 active:scale-[0.98] text-gray-800 font-bold text-xs rounded-xl flex items-center justify-center gap-1.5 transition-all">
             <span>📋 내 결과 링크 복사하기</span>
           </button>
@@ -387,7 +387,7 @@
       </p>
     </footer>
 
-    <!-- ================= [토스 스타일 커스텀 플로팅 토스트] ================= -->
+    <!-- ================= [토스 네이티브 스타일 플로팅 토스트] ================= -->
     <div id="custom-toast" class="fixed bottom-20 left-1/2 -translate-x-1/2 z-50 opacity-0 translate-y-3 pointer-events-none transition-all duration-300 ease-out">
       <div class="bg-gray-900/90 backdrop-blur-md text-white text-xs font-bold px-4 py-2.5 rounded-full shadow-2xl flex items-center gap-1.5 whitespace-nowrap border border-white/10">
         <span>✓</span>
@@ -413,7 +413,7 @@
     const COUNTER_NAMESPACE = 'what-if-solo-village-2026';
     const COUNTER_KEY = 'participant_count';
 
-    // [토스트 알림 함수: 브라우저 기본 alert 완전 대체]
+    // [토스트 알림 함수: alert 대체]
     function showToast(message) {
       const toast = document.getElementById('custom-toast');
       const toastMsg = document.getElementById('custom-toast-msg');
@@ -694,7 +694,7 @@
           godokRisk: 64, surviveRate: 29, votes: "1표", memeRate: 82,
           votesText: "첫인상 1표 (밝은 에너지)",
           desc: "지치지 않는 텐션으로 초반 분위기를 띄우는 무드메이커. 다만 감정이 너무 투명해 좋아하는 사람이 딴청을 피우면 속앓이하다 눈물을 터뜨리기 쉽습니다.",
-          best: "영식 (단정 모범형)", worst: "영수 (품격 맏형)"
+          best: "영식 (단정 모범형)", worst: "영호 (감정 솔직파)"
         },
         E: {
           name: "영숙", badge: "#도파민_감정서사", avatar: "🔮",
@@ -951,28 +951,25 @@
       return `${window.location.origin}${window.location.pathname}?r=${calculatedDominantType}&g=${currentGender}`;
     }
 
-    // [노란색 버튼: 스마트폰 하단 카카오톡 공유창 즉시 호출 (딜레이 및 복사 제재 제거)]
+    // [노란색 버튼: 카카오톡 앱 즉시 실행 및 다이렉트 전송 로직]
     function shareLink() {
       const data = resultsDb[currentGender][calculatedDominantType] || resultsDb[currentGender]['A'];
       const targetUrl = getResultUrl();
-      const shareTitle = `만약 내가 연애 예능에 나간다면?`;
-      const shareText = `야, 나 솔로나라 나가면 [${data.name}] 나온대 ㅋㅋㅋ\n첫인상 예상 득표: ${data.votes} / 고독정식 위험도: ${data.godokRisk}%\n\n내 결과 보고 너도 해봐👇`;
-
-      // 브라우저 터치 권한 만료를 방지하기 위해 await 없이 즉시 네이티브 공유창을 호출합니다.
-      if (navigator.share) {
-        navigator.share({
-          title: shareTitle,
-          text: shareText,
-          url: targetUrl,
-        }).catch(() => {
-          // 사용자가 취소했을 때는 복사 알림을 띄우지 않습니다.
-        });
-      } else {
-        copyToClipboard();
+      const shareText = `야, 나 솔로나라 나가면 [${data.name}] 나온대 ㅋㅋㅋ\n첫인상: ${data.votes} / 고독정식 위험도: ${data.godokRisk}%\n\n내 결과 보고 너도 해봐👇\n${targetUrl}`;
+      
+      // 1) 토스 인앱 내부에서 카카오톡 앱을 직접 호출하는 전용 스킴
+      const kakaoUrl = `kakaolink://send?text=${encodeURIComponent(shareText)}`;
+      
+      try {
+        // 카카오톡 바로 열기
+        window.location.href = kakaoUrl;
+      } catch (e) {
+        // 미지원 환경일 때 일반 카톡 스킴 호출
+        window.location.href = `kakaotalk://msg?text=${encodeURIComponent(shareText)}`;
       }
     }
 
-    // [회색 버튼: 클립보드 복사 + 브라우저 alert 대신 깔끔한 토스트 팝업 노출]
+    // [회색 버튼: 클립보드 복사 전용 (토스트 알림)]
     function copyToClipboard() {
       const targetUrl = getResultUrl();
       const data = resultsDb[currentGender][calculatedDominantType] || resultsDb[currentGender]['A'];
@@ -980,7 +977,7 @@
 
       if (navigator.clipboard && navigator.clipboard.writeText) {
         navigator.clipboard.writeText(copyContent).then(() => {
-          showToast('결과 링크가 복사되었습니다!');
+          showToast('내 결과 링크가 복사되었습니다!');
         }).catch(() => {
           fallbackCopyText(copyContent);
         });
@@ -989,7 +986,7 @@
       }
     }
 
-    // 구형 브라우저 클립보드 대응
+    // 클립보드 호환 함수
     function fallbackCopyText(text) {
       const textArea = document.createElement("textarea");
       textArea.value = text;
@@ -1000,7 +997,7 @@
       textArea.select();
       try {
         document.execCommand('copy');
-        showToast('결과 링크가 복사되었습니다!');
+        showToast('내 결과 링크가 복사되었습니다!');
       } catch (err) {
         showToast('링크를 길게 눌러 복사해 주세요.');
       }
