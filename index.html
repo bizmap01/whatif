@@ -362,7 +362,7 @@
 
         <!-- ================= [2개 버튼 체제] ================= -->
         <div id="owner-action-group" class="space-y-2.5">
-          <!-- 1. 메인: 카톡 / 스마트폰 기본 시스템 공유창 호출 버튼 -->
+          <!-- 1. 메인: 카톡 / 시스템 공유창 호출 버튼 -->
           <button onclick="shareLink()" class="w-full py-4 px-5 bg-[#FEE500] hover:bg-[#FADA0A] active:scale-[0.98] text-[#191919] font-black text-sm rounded-2xl flex items-center justify-center gap-2 shadow-sm transition-all">
             <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24">
               <path d="M12 3c-4.97 0-9 3.185-9 7.115 0 2.557 1.708 4.8 4.27 6.054-.188.702-.682 2.545-.78 2.94-.122.493.18.486.378.354.156-.104 2.483-1.688 3.49-2.373.53.078 1.077.119 1.642.119 4.97 0 9-3.185 9-7.115S16.97 3 12 3z"/>
@@ -566,7 +566,7 @@
         },
         {
           category: "Day 2. 첫 1:1 심야 데이트",
-          title: "호감 상대와 단둘이 떠난 밤 데이트, 나의 행동 스타일은?",
+          title: "호감 상대와 단둘이 떠난 밤 데이트, 나의 대화 스타일은?",
           options: [
             { text: "도도하게 분위기를 리드하며 남자가 안달 나게 만들기", type: "A" },
             { text: "\"운전하느라 고생했어!\" 털털하게 호탕한 웃음 짓기", type: "B" },
@@ -963,18 +963,16 @@
     }
 
     function getResultUrl() {
-      // 카카오톡 스크래퍼가 인식할 수 있는 실제 공개 웹 도메인으로 고정
       return `https://whatif-delta.vercel.app/?r=${calculatedDominantType}&g=${currentGender}`;
     }
 
-    // [노란색 버튼: 스마트폰 기본 시스템 공유창(메시지, 카톡 등) 즉시 호출]
+    // [노란색 버튼: 스마트폰 기본 시스템 공유창 호출]
     function shareLink() {
       const data = resultsDb[currentGender][calculatedDominantType] || resultsDb[currentGender]['A'];
       const targetUrl = getResultUrl();
       const shareTitle = `만약 내가 연애 예능에 나간다면?`;
       const shareText = `야, 나 솔로나라 나가면 [${data.name}] 나온대 ㅋㅋㅋ\n첫인상 예상 득표: ${data.votes} / 고독정식 위험도: ${data.godokRisk}%\n\n내 결과 보고 너도 해봐👇`;
 
-      // 1) 토스 네이티브 공유 API 지원 시 우선 호출
       if (window.AIT && typeof window.AIT.share === 'function') {
         try {
           window.AIT.share({
@@ -986,7 +984,6 @@
         } catch (e) {}
       }
 
-      // 2) 시스템 웹 공유 시트 호출
       if (navigator.share) {
         navigator.share({
           title: shareTitle,
@@ -999,7 +996,6 @@
         return;
       }
 
-      // 3) 안드로이드 인텐트 폴백
       fallbackSystemShare(shareTitle, shareText);
     }
 
